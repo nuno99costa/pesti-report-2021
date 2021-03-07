@@ -22,9 +22,9 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v2
       - name: Compile LaTeX document
-        uses: Sakul6499/GitHub-Action-LaTeX@v1.0.0
+        uses: xu-cheng/latex-action@v2
         with:
-          latex_main_file: main.tex
+          root_file: main.tex
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
