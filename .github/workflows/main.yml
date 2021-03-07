@@ -31,5 +31,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: PDF
-          path: main.zip
+          upload_url: main.pdf
+          asset_path: ./main.pdf
+          asset_name: main.pdf
+          asset_content_type: application/zip
