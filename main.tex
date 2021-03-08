@@ -6,7 +6,7 @@
 \selectlanguage{english} 
 \usepackage[backend=biber, style=apa6]{biblatex}
 \addbibresource{bibliography/refs.bib}
-\usepackage{glossaries}
+\usepackage[nopostdot]{glossaries}
 \usepackage{textcomp}
 
 \makeglossaries
@@ -60,6 +60,11 @@
 \makeatother
 
 % ADDITIONAL PACKAGES
+\usepackage{siunitx}
+\sisetup{
+  group-four-digits = true,
+  group-separator = {,}
+}
 
 \usepackage[usestackEOL]{stackengine}
 \usepackage{ragged2e}
@@ -93,7 +98,7 @@
 
        \vspace*{1cm}
 
-        \textbf{\huge Parameter Optimization using Machine Learning}
+        \textbf{\huge Hyper Parameter Optimization using Machine Learning}
         \vspace{0.5cm}
         \\{\large Antares Lda.}
         \vspace{1cm}
@@ -150,7 +155,7 @@
 
 \newpage
 
-\printglossary[nonumberlist]
+\printglossary[nonumberlist,title=Glossary and Acronyms]
 
 \newpage
 
