@@ -44,7 +44,7 @@ jobs:
           name: report.pdf
           path: main.pdf
       - name: rsync deployments
-        uses: burnett01/rsync-deployments@latest
+        uses: burnett01/rsync-deployments@4.1
         with:
           switches: -avzr --delete
           path: main.pdf
