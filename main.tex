@@ -4,7 +4,7 @@
 % DEFAULT PACKAGES
 \usepackage[english]{babel}
 \selectlanguage{english} 
-\usepackage[backend=biber, style=apa6]{biblatex}
+\usepackage[backend=biber, style=apa6, sorting=nyc]{biblatex}
 \addbibresource{bibliography/refs.bib}
 \usepackage[nopostdot]{glossaries}
 \usepackage{textcomp}
@@ -14,7 +14,30 @@
 
 \usepackage{geometry}
 
-%FOOTER
+% BIBSORT
+\DeclareSortingScheme{nyc}{
+  \sort{
+    \field{presort}
+  }
+  \sort[final]{
+    \field{sortkey}
+  }
+  \sort{
+    \field{sortname}
+    \field{author}
+    \field{editor}
+    \field{translator}
+    \field{sorttitle}
+    \field{title}
+  }
+  \sort{
+    \field{sortyear}
+    \field{year}
+  }
+  \sort{\citeorder}
+}
+
+% FOOTER
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
