@@ -43,3 +43,12 @@ jobs:
         with:
           name: report.pdf
           path: main.pdf
+      - name: rsync deployments
+        uses: burnett01/rsync-deployments@latest
+        with:
+          switches: -avzr --delete
+          path: main.pdf
+          remote_path: /home/dietpi/Downloads
+          remote_host: nuno99costa.xyz
+          remote_user: root
+          remote_key: ${{ secrets.DEPLOY_KEY }}
