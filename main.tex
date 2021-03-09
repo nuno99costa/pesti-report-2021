@@ -1,18 +1,17 @@
 % !TEX options=--shell-escape
 \documentclass[10pt,titlepage]{article}
 
-% DEFAULT PACKAGES
-\usepackage[english]{babel}
-\selectlanguage{english} 
-\usepackage[backend=biber, style=apa6, sorting=nyc]{biblatex}
-\addbibresource{bibliography/refs.bib}
-\usepackage[nopostdot]{glossaries}
-\usepackage{textcomp}
+\usepackage{packages}
 
+% BIBLIOGRAPHY
+\addbibresource{bibliography/introduction.bib}
+
+% GLOSSARIES
 \makeglossaries
 \input{glossary}
 
-\usepackage{geometry}
+%MACROS
+\newcommand{\faro}[0]{FARO\textsuperscript{\textregistered}}
 
 % BIBSORT
 \DeclareSortingScheme{nyc}{
@@ -38,7 +37,6 @@
 }
 
 % FOOTER
-\usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\footrulewidth}{0pt}    
@@ -54,11 +52,9 @@
 }
 
 % IMAGES
-\usepackage{graphicx}
 \graphicspath{ {./images/} }
 
-% frontmatter/mainmatter
-
+% FRONTMATTER/MAINMATTER
 \makeatletter
 
 \newcommand\frontmatter{%
@@ -82,16 +78,11 @@
 
 \makeatother
 
-% ADDITIONAL PACKAGES
-\usepackage{siunitx}
+% ADDITIONAL SETTINGS
 \sisetup{
   group-four-digits = true,
   group-separator = {,}
 }
-
-\usepackage[usestackEOL]{stackengine}
-\usepackage{ragged2e}
-\usepackage{graphicx}
 
 % DOCUMENT
 \begin{document}
@@ -172,11 +163,7 @@
 
 \listoffigures
 
-\newpage
-
 \listoftables
-
-\newpage
 
 \printglossary[nonumberlist,title=Glossary and Acronyms]
 
