@@ -48,7 +48,7 @@ jobs:
         with:
           switches: -avzr --delete
           path: main.pdf
-          remote_path: /home/dietpi/Downloads
+          remote_path: /mnt/nas8tb/swag/config/
           remote_host: nuno99costa.xyz
           remote_user: root
           remote_key: ${{ secrets.DEPLOY_KEY }}
