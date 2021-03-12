@@ -2,11 +2,13 @@
 
 \subsection{Related Works}
 
-Automated \acrshort{hpo} approaches can be separated into informed and non-informed. Non-informed methods simply transverse a predefined solution space, selecting the best option, while informed approaches attempt to build on top of previous assumptions to make educated guesses on the best hyper parameter values.
+Automated \acrshort{hpo} approaches can be separated into informed and uninformed. Uninformed methods simply transverse a predefined solution space, selecting the best option, while informed approaches attempt to build on top of previous assumptions to make educated guesses on the best hyper parameter values.
 
-\subsubsection{Non-informed Algorithms}
+Not all available algorithms were researched, focusing instead on different approaches, usage across the \acrshort{machinel} field and historic significance.
 
-The 2 most common non-informed methods for \acrshort{hpo} are grid search and random search.
+\subsubsection{Uninformed Algorithms}
+
+The 2 most common uninformed methods for \acrshort{hpo} are grid search and random search.
 
 \paragraph{Grid Search}
 Traditionally grid search is used for \acrshort{hpo} \parencite{liashchynskyi2019grid}. This method predetermines a definition of hyper parameter possible ranges and tests every hyper parameter combination from the solution space provided (see Figure \ref{grid}).
@@ -79,8 +81,43 @@ Traditionally grid search is used for \acrshort{hpo} \parencite{liashchynskyi201
 		    };
 		\end{axis}
 	\end{tikzpicture}
-    \caption{Illustration of a random search. The hyper parameters values are randomly generated and the algorithm does an exhaustive search on all the possible combinations.}
+    \caption{Illustration of a random search. The hyper parameters values are randomly generated and the algorithm searches all the combinations.}
     \label{random}
  \end{figure}
 
-\subsubsection{Non-informed Algorithms}
+\subsubsection{Informed Algorithms}
+
+\acrshort{hpo} is an active area of research, with a majority of it focused on informed algorithms. These methods improve over time, by, for example, basing new possible solutions on previous attempts (see evolutionary optimization) or by estimating good candidates based on probabilistic models (see bayesian optimization).
+
+\paragraph{Bayesian Optimization}
+
+Bayesian optimization can be described as sequential model-based optimization, whereas a probabilistic model is updated after every optimization attempt \parencite{dewancker}.
+
+Various probabilistic regression can be used (e.g. Gaussian Processes and Random Forests). One of these regression models, Tree Parzen Estimators, deviates from the standard regression models, which use a predictive distribution $p(y|x)$. Instead, it uses a predictive distribution $p(x|y)$ \parencite{NIPS2011_86e8f7ab}.
+ 
+\paragraph{Simulated Annealing}
+
+This algorithm is based in the annealing process in metallurgy, where metal is heated to a high temperature and then slowly cooled, allowing for atoms to settle into more stable configurations \parencite[p. 128]{kochenderfer2019algorithms}.
+
+\paragraph{Gradient-based Optimization}
+
+
+
+\paragraph{Evolutionary Optimization}
+
+
+
+\paragraph{Population-based Optimization}
+
+
+
+\paragraph{Early Stopping-based Optimization}
+
+
+
+\paragraph{HyperBand}
+
+
+
+\paragraph{Spectral Optimization}
+
