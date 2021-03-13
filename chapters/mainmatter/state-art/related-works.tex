@@ -101,11 +101,21 @@ This algorithm is based in the annealing process in metallurgy, where metal is h
 
 \paragraph{Gradient-based Optimization}
 
-
+This algorithm uses the gradient of the model selection criterion with respect to the hyperparameters \parencite{bengio2000}. This algorithm is unsuitable when the optimizable function is treated as a black box function (where we only have access to  it's output and inputs).
 
 \paragraph{Evolutionary Optimization}
 
+This set of optimization methods use algorithms inspired by biological evolution.
 
+These algorithms follow simple guidelines:
+
+\begin{enumerate}
+	\item Create initial population of individuals (hyper parameter value set)
+	\item Evaluate each individual
+	\item Rank individuals
+	\item Replace the bottom ranked individuals with new individuals generated through crossover and mutation
+	\item Repeat within defined constraints.
+\end{enumerate}
 
 \paragraph{Population-based Optimization}
 
