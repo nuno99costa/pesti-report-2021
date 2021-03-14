@@ -85,6 +85,12 @@ Traditionally grid search is used for \acrshort{hpo} \parencite{liashchynskyi201
     \label{random}
  \end{figure}
 
+\paragraph{Simulated Annealing}
+
+This algorithm is based in the annealing process in metallurgy, where metal is heated to a high temperature and then slowly cooled, allowing for atoms to settle into more stable configurations \parencite[p. 128]{kochenderfer2019algorithms}.
+
+Analogously, simulated annealing maintains a single candidate solution and takes steps of random size from the candidate in the search space, replacing the current candidate with a better solution or, with a certain probability, a worse one.
+
 \subsubsection{Informed Algorithms}
 
 \acrshort{hpo} is an active area of research, with a majority of it focused on informed algorithms. These methods improve over time, by, for example, basing new possible solutions on previous attempts (see evolutionary optimization) or by estimating good candidates based on probabilistic models (see bayesian optimization).
@@ -94,12 +100,9 @@ Traditionally grid search is used for \acrshort{hpo} \parencite{liashchynskyi201
 Bayesian optimization can be described as sequential model-based optimization, whereas a probabilistic model is updated after every optimization attempt \parencite{dewancker}.
 
 Various probabilistic regression can be used (e.g. Gaussian Processes and Random Forests). One of these regression models, Tree Parzen Estimators, deviates from the standard regression models, which use a predictive distribution $p(y|x)$. Instead, it uses a predictive distribution $p(x|y)$ \parencite{NIPS2011_86e8f7ab}.
- 
-\paragraph{Simulated Annealing}
-
-This algorithm is based in the annealing process in metallurgy, where metal is heated to a high temperature and then slowly cooled, allowing for atoms to settle into more stable configurations \parencite[p. 128]{kochenderfer2019algorithms}.
 
 \paragraph{Gradient-based Optimization}
+
 
 
 
