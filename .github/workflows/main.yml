@@ -43,12 +43,12 @@ jobs:
         with:
           name: report.pdf
           path: main.pdf
-      - name: rsync deployments
-        uses: burnett01/rsync-deployments@4.1
-        with:
-          switches: -avzr --delete
-          path: main.pdf
-          remote_path: /mnt/nas8tb/swag/config/
-          remote_host: nuno99costa.xyz
-          remote_user: root
-          remote_key: ${{ secrets.DEPLOY_KEY }}
+      # - name: rsync deployments
+      #   uses: burnett01/rsync-deployments@4.1
+      #   with:
+      #     switches: -avzr --delete
+      #     path: main.pdf
+      #     remote_path: /mnt/nas8tb/swag/config/
+      #     remote_host: nuno99costa.xyz
+      #     remote_user: root
+      #     remote_key: ${{ secrets.DEPLOY_KEY }}
