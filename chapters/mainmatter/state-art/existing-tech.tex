@@ -4,24 +4,30 @@
 
 \acrfull{hpo} is an important step in the machine learning development pipeline. This is usually implemented into other frameworks (as part of a complete pipeline framework). We pay special attention to existing frameworks that are model agnostic, written in \acrfull{python} and are able to treat the objective function as a \textit{black box}.
 
-\subsubsection{Open-source Software}
+We also also specify important software tools or protocols used.
+
+\subsubsection{Hyper Parameter Optimization}
+
+\paragraph{Open-source Software}
 
 Due to the academic nature of the development of \acrshort{hpo} frameworks, there are a plethora of frameworks, with different optimization techniques, goals and interfaces. We present some open source frameworks that introduce specific features or optimization techniques, are industry standard as well as some commercial offerings.
 
-\paragraph{Determined} This is an open-source deep learning training platform \parencite{determined-ai}. It allows for distributed training using a custom Horovod-based framework \parencite{alex2018horovod} as well as features to better utilize computational resources (smart scheduling). It's \acrshort{hpo} interface supports ASHA \parencite{li2018massively}, grid search, random search and population-based training. This framework is specifically focused on deep learning, which makes it harder to use with black-box functions.
+\subparagraph{Determined} This is an open-source deep learning training platform \parencite{determined-ai}. It allows for distributed training using a custom Horovod-based framework \parencite{alex2018horovod} as well as features to better utilize computational resources (smart scheduling). It's \acrshort{hpo} interface supports ASHA \parencite{li2018massively}, grid search, random search and population-based training. This framework is specifically focused on deep learning, which makes it harder to use with black-box functions.
 
-\paragraph{HpBandSter} This \acrshort{python} package implements a distributed HyperBand algorithm, allowing for parallelization of the \acrshort{hpo} \parencite{hpbandster}. It also implements BOHB, which combines bayesian optimization and HyperBand \parencite{pmlr-v80-falkner18a}.
+\subparagraph{HpBandSter} This \acrshort{python} package implements a distributed HyperBand algorithm, allowing for parallelization of the \acrshort{hpo} \parencite{hpbandster}. It also implements BOHB, which combines bayesian optimization and HyperBand \parencite{pmlr-v80-falkner18a}.
 
-\paragraph{hyperopt} This \acrshort{python} library is intended to be used for serial and parallel \acrshort{hpo} \parencite{hyperopt}. It implements random search and tree parzen estimators. It's parallelization feature can be executed using Apache Spark or MongoDB.
+\subparagraph{hyperopt} This \acrshort{python} library is intended to be used for serial and parallel \acrshort{hpo} \parencite{hyperopt}. It implements random search and tree parzen estimators. It's parallelization feature can be executed using Apache Spark or MongoDB.
 
-\paragraph{scikit-learn} This framework is one of the most popular frameworks for machine learning in \acrshort{python}. It implements a full development pipeline for machine learning, including \acrshort{hpo} \parencite{scikit-learn}. It implements grid search, random search and successive halving as default available optimization algorithms. It also has community developed add-on algorithms, such as Auto-sklearn \parencite{auto-sklearn} and scikit-optimize \parencite{scikit-optimize}.
+\subparagraph{scikit-learn} This framework is one of the most popular frameworks for machine learning in \acrshort{python}. It implements a full development pipeline for machine learning, including \acrshort{hpo} \parencite{scikit-learn}. It implements grid search, random search and successive halving as default available optimization algorithms. It also has community developed add-on algorithms, such as Auto-sklearn \parencite{auto-sklearn} and scikit-optimize \parencite{scikit-optimize}.
 
-\paragraph{Tune} This \acrshort{python} library is part of Ray \parencite{ray}, an open source framework that provides a simple, universal API for building distributed applications \parencite{liaw2018tune}. It supports distributed computing and multiple \acrshort{gpu}s per computing node. It implements random search, grid search, a number of bayesian optimization algorithms, Tree-Parzen estimators, HyperBand, gradient-free optimization and BOHB.
+\subparagraph{Tune} This \acrshort{python} library is part of Ray \parencite{ray}, an open source framework that provides a simple, universal API for building distributed applications \parencite{liaw2018tune}. It supports distributed computing and multiple \acrshort{gpu}s per computing node. It implements random search, grid search, a number of bayesian optimization algorithms, Tree-Parzen estimators, HyperBand, gradient-free optimization and BOHB.
 
-\subsubsection{Commercial Services} 
+\paragraph{Commercial Services} 
 
 As the machine learning field grows, companies are trying to create services tailored to machine learning focused customers.
 
-\paragraph{Amazon Sagemaker} This cloud \acrshort{machinel} platform, developed by Amazon, is a complete suite of tools for creating, training and deploying \acrshort{machinel} in the cloud \parencite{sagemaker}. This platform implements \acrshort{hpo} algorithms such as random search and bayesian optimization.
+\subparagraph{Amazon Sagemaker} This cloud \acrshort{machinel} platform, developed by Amazon, is a complete suite of tools for creating, training and deploying \acrshort{machinel} in the cloud \parencite{sagemaker}. This platform implements \acrshort{hpo} algorithms such as random search and bayesian optimization.
 
-\paragraph{Google HyperTune} This training platform is part of Google's AI Platform \parencite{ghypertune}. It supports bayesian optimization, grid search and random search.   
+\subparagraph{Google HyperTune} This training platform is part of Google's AI Platform \parencite{ghypertune}. It supports bayesian optimization, grid search and random search.   
+
+\todo{mention APIs, Docker, Python modules}
