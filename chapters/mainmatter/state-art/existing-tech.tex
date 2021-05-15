@@ -30,4 +30,21 @@ As the machine learning field grows, companies are trying to create services tai
 
 \subparagraph{Google HyperTune} This training platform is part of Google's AI Platform \parencite{ghypertune}. It supports bayesian optimization, grid search and random search.   
 
-\todo{mention APIs, Docker, Python modules}
+\subsubsection{Virtualization}
+
+As a part of the development of the software solution, it was necessary to implement a virtualization mechanism to harmonize the development environment (Windows) and the target \acrfull{os} of the Ray framework (Linux). These techniques can be separated on the level at which they operate - hardware virtualization, desktop virtualization and \acrshort{os}-level virtualization. \todo{should I add this to the related works section?} Here we focus our research on \acrshort{os}-level virtualization, as it was at this level (where we are able to run another \acrshort{os}) that the solution was developed on.
+
+\acrshort{os}-level virtualization is a technology that partitions the operating system to create multiple isolated \acrfull{vm} \parencite{10.5555/1571423}. \todo{refer advantages of os-level virtualization?}
+
+\paragraph{Chroot} This Unix operation was initially introduced in 1979. Chroot can be considered to be a rudimentary form of virtualization, as it changes the apparent root directory for the current running process and any software running in this environment cannot access files outside the designated root directory, effectively limiting it's access to a directory tree, while still allowing acess to other resources \parencite{foundation_2017}.
+
+\paragraph{Docker/Moby} Docker is a set of \acrfull{paas} products that use \acrshort{os}-level virtualization to package software into containers. These tools are open sourced through the Moby Project \parencite{moby_oro}. Docker is one of the most used container runtime engines, with ample documentation, examples and support from the community \parencite[p. 20]{stateofcontainers}.
+
+
+\paragraph{Kubernetes} This tool, also known as K8s, is an open source system for managing containerized applications across multiple hosts. It provides basic mechanisms for deployment, maintenance, and scaling of applications \parencite{kubernetes}.
+
+\paragraph{Vagrant}
+
+\paragraph{VMware}
+
+\todo{mention APIs, Python modules}
