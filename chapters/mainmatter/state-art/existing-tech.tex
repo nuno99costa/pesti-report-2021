@@ -32,9 +32,9 @@ As the machine learning field grows, companies are trying to create services tai
 
 \subsubsection{Virtualization}
 
-As a part of the development of the software solution, it was necessary to implement a virtualization mechanism to harmonize the development environment (Windows) and the target \acrfull{os} of the Ray framework (Linux). These techniques can be separated on the level at which they operate - hardware virtualization, desktop virtualization and \acrshort{os}-level virtualization. \todo{should I add this to the related works section?} Here we focus our research on \acrshort{os}-level virtualization, as it was at this level (where we are able to run another \acrshort{os}) that the solution was developed on.
+As a part of the development of the software solution, it was necessary to implement a virtualization mechanism to harmonize the development environment (Windows) and the target \acrfull{os} of the Ray framework (Linux). These techniques can be separated on the level at which they operate - hardware virtualization, desktop virtualization and \acrshort{os}-level virtualization. \todo{Should I add this to the related works section?} Here we focus our research on \acrshort{os}-level virtualization, as it was at this level (where we are able to run another \acrshort{os}) that the solution was developed on.
 
-\acrshort{os}-level virtualization is a technology that partitions the operating system to create multiple isolated \acrfull{vm} \parencite{10.5555/1571423}. \todo{refer advantages of os-level virtualization?}
+\acrshort{os}-level virtualization is a technology that partitions the operating system to create multiple isolated \acrfull{vm} \parencite{10.5555/1571423}. \todo{Should I refer advantages of os-level virtualization?}
 
 \paragraph{Chroot} This Unix operation was initially introduced in 1979. Chroot can be considered to be a rudimentary form of virtualization, as it changes the apparent root directory for the current running process and any software running in this environment cannot access files outside the designated root directory, effectively limiting it's access to a directory tree, while still allowing acess to other resources \parencite{foundation_2017}.
 
@@ -45,4 +45,4 @@ As a part of the development of the software solution, it was necessary to imple
 
 \paragraph{VMware Workstation} This virtualization software is one of the most used with regards to hardware level optimization. Although this type of virtualization allows for better control over hardware (allowing for their complete simulation), it increases the overhead of running any software service \parencite{bauer_2019}.
 
-\todo{Should I mention web APIs (used them to connect to CAM2 software), Python modules (the way I use Ray Tune)?}
+\todo[color=green]{Professor:\\Should I mention web APIs (used them to connect to CAM2 software), Python modules (the way I use Ray Tune)?}

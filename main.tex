@@ -2,6 +2,7 @@
 \documentclass[10pt,titlepage]{article}
 
 \usepackage{packages}
+\pgfplotsset{compat=1.17}
 
 % BIBLIOGRAPHY
 \addbibresource{bibliography/introduction.bib}
@@ -15,7 +16,7 @@
 \newcommand{\faro}[0]{FARO\textsuperscript{\textregistered}}
 
 % BIBSORT
-\DeclareSortingScheme{nyc}{
+\DeclareSortingTemplate{nyc}{
   \sort{
     \field{presort}
   }

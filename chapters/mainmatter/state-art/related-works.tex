@@ -13,7 +13,7 @@ The 2 most common uninformed methods for \acrshort{hpo} are grid search and rand
 \paragraph{Grid Search}
 Traditionally grid search is used for \acrshort{hpo} \parencite{liashchynskyi2019grid} wherehas a researcher or developer predefines possible values for a given hyperparameter and tests every hyper parameter combination from the solution space provided (see Figure \ref{grid}).
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\begin{tikzpicture}
 		\begin{axis}[
@@ -55,7 +55,7 @@ Traditionally grid search is used for \acrshort{hpo} \parencite{liashchynskyi201
 
 \paragraph{Random Search} This method is similar to grid search, but replaces manually set values with ranges and allows for randomized selection of hyper parameter values (see Figure \ref{random}). This method has been proven to be more efficient than grid search \parencite{JMLR:v13:bergstra12a}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\begin{tikzpicture}
 		\begin{axis}[
