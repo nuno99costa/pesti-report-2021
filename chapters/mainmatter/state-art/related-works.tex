@@ -17,7 +17,7 @@ Not all available algorithms were researched, focusing instead on different appr
 
 Black-box optimization algorithms treats the problem functions as black-boxes (any process that is not analytically available) \parencite[ch.~1]{book}. Therefore, any algorithm that does not directly infer any information from the problem function and uses zero or one models to produce results is considered to be a black box algorithm.
 
-\paragraph{Grid Search}
+\subparagraph{Grid Search}
 Traditionally grid search is used for \acrshort{hpo} \parencite{liashchynskyi2019grid} whereas a researcher or developer predefines possible values for a given hyper parameter and tests every hyper parameter combination from the solution space provided (see Figure \ref{grid}).
 
 \begin{figure}[h]
@@ -60,7 +60,7 @@ Traditionally grid search is used for \acrshort{hpo} \parencite{liashchynskyi201
     \label{grid}
  \end{figure}
 
-\paragraph{Random Search} This method is similar to grid search, but replaces manually set values with ranges and allows for randomized selection of hyper parameter values (see Figure \ref{random}). This method has been proven to be more efficient than grid search \parencite{JMLR:v13:bergstra12a}.
+\subparagraph{Random Search} This method is similar to grid search, but replaces manually set values with ranges and allows for randomized selection of hyper parameter values (see Figure \ref{random}). This method has been proven to be more efficient than grid search \parencite{JMLR:v13:bergstra12a}.
 
 \begin{figure}[h]
 	\centering
@@ -92,35 +92,35 @@ Traditionally grid search is used for \acrshort{hpo} \parencite{liashchynskyi201
     \label{random}
  \end{figure}
 
-\paragraph{Simulated Annealing}
+\subparagraph{Simulated Annealing}
 
 This algorithm is based in the annealing process observed in metallurgy, where metal is heated to a high temperature and then slowly cooled, allowing for atoms in the metal to settle into more stable configurations \parencite{elshawi2019automated}.
 
 Analogously, simulated annealing maintains a single candidate solution and takes steps of random size from the candidate in the search space, replacing the current candidate with a better solution or, with a certain probability, a worse one.
 
-\paragraph{Bayesian Optimization}
+\subparagraph{Bayesian Optimization}
 
 Bayesian optimization can be described as sequential model-based optimization, whereas a probabilistic model is updated after every optimization attempt \parencite{dewancker}.
 
 Various probabilistic regression models can be used (e.g. Gaussian Processes and Random Forests). One of these regression models, Tree Parzen Estimators, deviates from the standard regression models, which use a predictive distribution $p(y|x)$. Instead, it creates two density functions that act as generative models for all domain variables \parencite{NIPS2011_86e8f7ab}\parencite{elshawi2019automated}.
 
-\paragraph{Genetic Algorithms}
+\subparagraph{Genetic Algorithms}
 
 This set of optimization methods use algorithms inspired by biological evolution.
 
 These algorithms are usually based on the idea of applying the multiple genetic operations (crossover, mutation, survival of the fittest) to a population of configurations \parencite{elshawi2019automated}.
 
-\paragraph{Population-based Optimization}
+\subparagraph{Population-based Optimization}
 
 This optimization technique is a hybrid of two methods of \acrshort{hpo}: random search and hand-tuning.
 
 It starts by training a number of individual algorithms with random hyper parameters. But, instead of each algorithm working individually, they share information between them, to refine parameters and manage computational resources to solution sets that show promising results \parencite{jaderberg2017population}.
 
-\paragraph{Gradient-based Optimization}
+\subparagraph{Gradient-based Optimization}
 
 This algorithm uses the gradient of the model selection criterion with respect to the hyper parameters \parencite{bengio2000}. This algorithm is unsuitable when the optimizable function is treated as a black box function (where we only have access to  it's output and inputs).
 
-\paragraph{Spectral Optimization}
+\subparagraph{Spectral Optimization}
 
 This algorithm is inspired by techniques used in analysis of Boolean functions \parencite{hazan2017hyperparameter}. It specifically uses an iterative application of compressed sensing technique, allowing for easier parallelization.
 

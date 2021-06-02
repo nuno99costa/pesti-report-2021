@@ -4,7 +4,7 @@
 
 The initial proposition for this internship was to develop a framework to allow for the usage of machine learning algorithms to autonomously improve the parameters of an existing function in \faro's code base.
 
-To ascertain that the developed framework was working as intended and to guide development efforts, a specific function was used as a test case. This function, henceforth referenced as the \acrfull{pca} function, aligns a point cloud and produces an accuracy result for the alignment made. The \acrshort{pca} function includes two parameters, max iterations and sample size, which where previously defined.
+To ascertain that the developed framework was working as intended and to guide development efforts, a specific function was used as a proof of concept. This function, henceforth referenced as the \acrfull{pca} function, aligns a point cloud and produces an accuracy result for the alignment made. The \acrshort{pca} function includes two parameters, max iterations and sample size, which where previously defined and now are the subject to optimization.
 
 This setup has one main problem, that extends to every other function that has statically defined parameters that are not know to be perfect:
 
@@ -19,6 +19,18 @@ With this information, a few goals were defined for this internship:
 	\item Use state of the art machine learning techniques, future-proofing the framework.
 	\item Create a modular approach to integrating this tool with new algorithms, from new machine learning techniques to more complex improvable algorithms.
 \end{itemize}
+
+\subsubsection{Domain Concepts}
+
+This project contains various well defined concepts that are translated into the software domain model, here we define these concepts and define the interactions between them.
+
+\paragraph{Hyperparameter}
+
+One such concept is the hyper parameter. This is usually a range (continous or not) that defines the possible values for a given hyper parameter of the optimizable function. All hyperparameters related to a give function can be translated into software as a ConfigSpace object, which is a simple python package to manage configuration spaces for algorithm configuration and hyperparameter optimization tasks \parencite{BOAH}. 
+
+\paragraph{Optimizer Algorithm}
+
+\paragraph{Optimizable Function}
 
 \subsubsection{Domain Model}
 
