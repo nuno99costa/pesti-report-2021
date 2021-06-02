@@ -2,30 +2,25 @@
 
 \subsection{Related Works}
 
-Automated \acrshort{hpo} approaches can be separated into informed and uninformed. Uninformed methods simply transverse a predefined solution space, selecting the best option, while informed approaches attempt to build on top of previous assumptions to make educated guesses on the best hyper parameter values.
+Automated \acrshort{hpo} approaches can be separated by their approaches with regards to the optimizable function (see Figure \ref{fig:state_of_art_taxonomy}). Here we split different algorithms into black-box and multi-fidelity based solutions.
 
 Not all available algorithms were researched, focusing instead on different approaches, usage across the \acrshort{machinel} field and historic significance.
 
-\todo{rewrite this to mention \ref{state_of_art:image:taxonomy}}
-
-https://neptune.ai/blog/hyperband-and-bohb-understanding-state-of-the-art-hyperparameter-optimization-algorithms
-https://arxiv.org/pdf/1906.02287.pdf
-
-\begin{figure}[h!]
-	\includegraphics[width=\textwidth]{images/state_art-taxonomy_optimizers.png}
-	\label{state_of_art:image:taxonomy}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.75\textwidth]{images/state_art-taxonomy_optimizers.png}
 	\caption{A Taxonomy for the Hyper-parameter Optimization Techniques \parencite{elshawi2019automated}.}
+	\label{fig:state_of_art_taxonomy}
 \end{figure}
 
 \subsubsection{Black-Box Optimization Algorithms}
 
-The 2 most common uninformed methods for \acrshort{hpo} are grid search and random search.
-\todo{rewrite this to refer to blackbox optimization}
+Black-box optimization algorithms treats the problem functions as black-boxes (any process that is not analytically available) \parencite[ch.~1]{book}. Therefore, any algorithm that does not directly infer any information from the problem function and uses zero or one models to produce results is considered to be a black box algorithm.
 
 \paragraph{Grid Search}
-Traditionally grid search is used for \acrshort{hpo} \parencite{liashchynskyi2019grid} wherehas a researcher or developer predefines possible values for a given hyperparameter and tests every hyper parameter combination from the solution space provided (see Figure \ref{grid}).
+Traditionally grid search is used for \acrshort{hpo} \parencite{liashchynskyi2019grid} whereas a researcher or developer predefines possible values for a given hyper parameter and tests every hyper parameter combination from the solution space provided (see Figure \ref{grid}).
 
-\begin{figure}[ht]
+\begin{figure}[h]
 	\centering
 	\begin{tikzpicture}
 		\begin{axis}[
@@ -67,7 +62,7 @@ Traditionally grid search is used for \acrshort{hpo} \parencite{liashchynskyi201
 
 \paragraph{Random Search} This method is similar to grid search, but replaces manually set values with ranges and allows for randomized selection of hyper parameter values (see Figure \ref{random}). This method has been proven to be more efficient than grid search \parencite{JMLR:v13:bergstra12a}.
 
-\begin{figure}[ht]
+\begin{figure}[h]
 	\centering
 	\begin{tikzpicture}
 		\begin{axis}[
@@ -107,7 +102,7 @@ Analogously, simulated annealing maintains a single candidate solution and takes
 
 Bayesian optimization can be described as sequential model-based optimization, whereas a probabilistic model is updated after every optimization attempt \parencite{dewancker}.
 
-Various probabilistic regression can be used (e.g. Gaussian Processes and Random Forests). One of these regression models, Tree Parzen Estimators, deviates from the standard regression models, which use a predictive distribution $p(y|x)$. Instead, it creates two density functions that act as generative models for all domain variables \parencite{NIPS2011_86e8f7ab}\parencite{elshawi2019automated}.
+Various probabilistic regression models can be used (e.g. Gaussian Processes and Random Forests). One of these regression models, Tree Parzen Estimators, deviates from the standard regression models, which use a predictive distribution $p(y|x)$. Instead, it creates two density functions that act as generative models for all domain variables \parencite{NIPS2011_86e8f7ab}\parencite{elshawi2019automated}.
 
 \paragraph{Genetic Algorithms}
 
@@ -121,23 +116,6 @@ This optimization technique is a hybrid of two methods of \acrshort{hpo}: random
 
 It starts by training a number of individual algorithms with random hyper parameters. But, instead of each algorithm working individually, they share information between them, to refine parameters and manage computational resources to solution sets that show promising results \parencite{jaderberg2017population}.
 
-\subsubsection{Multi-Fidelity Optimization}
-
-A area of increased attention in the\acrshort{hpo} research field is multi-fidelity techniques. These methods focus on decreasing the evaluation cost of a given function by combining cheap low-fidelity and expensive high-fidelity evaluations \parencite{elshawi2019automated}. These techniques are essential for optimization in high cost functions, where optimizing one hyperparameter can take days.
-
-\paragraph{Bandit-based Optimization}
-
-\todo{rewrite as a class of optimizers}
-This technique is based on the \textit{multi-armed bandit problem}, whereas a limited set of resources must be allocated between competing choices, maximizing expected gain \parencite{Katehakis1987TheMB}. Similarly, using this algorithm in \acrshort{hpo} allows computers to stop execution of an algorithm (with defined hyper parameter values), by analyzing observable features during the run. This also leads to a decrease in computational power required to tune hyper parameters. \textit{Successive halving} is an example of an algorithm that employs this technique \parencite{jamieson2015nonstochastic}.
-
-\subparagraph{HyperBand}
-
-This algorithm is based on bandit-based optimization, solving the issue of time allocation in lieu of search time. As an example, \textit{successive halving} incurs on an issue regarding whether to allocate a large part of the time budget on exploring a large number of solutions rather than tuning a small number of them \parencite{elshawi2019automated}. \textit{HyperBand} attempts to solve this issue by partitioning the original time budget into smaller time and budget combinations and using \textit{successive halving} on each configuration \parencite{li2016hyperband}.
-
-\todo{Successive Halving}
-
-\subsubsection{Where are these supposed to go}
-
 \paragraph{Gradient-based Optimization}
 
 This algorithm uses the gradient of the model selection criterion with respect to the hyper parameters \parencite{bengio2000}. This algorithm is unsuitable when the optimizable function is treated as a black box function (where we only have access to  it's output and inputs).
@@ -145,3 +123,23 @@ This algorithm uses the gradient of the model selection criterion with respect t
 \paragraph{Spectral Optimization}
 
 This algorithm is inspired by techniques used in analysis of Boolean functions \parencite{hazan2017hyperparameter}. It specifically uses an iterative application of compressed sensing technique, allowing for easier parallelization.
+
+\subsubsection{Multi-Fidelity Optimization Algorithms}
+
+A area of increased attention in the \acrshort{hpo} research field is multi-fidelity techniques. These methods focus on decreasing the evaluation cost of a given function by combining cheap low-fidelity and expensive high-fidelity evaluations \parencite{elshawi2019automated}. These techniques are essential for optimization in high cost functions, where optimizing one hyper parameter can take days.
+
+\paragraph{Bandit-based Optimization}
+
+These techniques are based on the \textit{multi-armed bandit problem}, whereas a limited set of resources must be allocated between competing choices, maximizing expected gain \parencite{Katehakis1987TheMB}. Similarly, using this class of algorithms in \acrshort{hpo} allows computers to stop the execution of a trial (with defined hyper parameter values), by analysing observable features during the run. This also leads to a decrease in computational power and time required to tune hyper parameters. 
+
+\subparagraph{Successive Halving} 
+This algorithm is an example of bandit-based approach to \acrshort{hpo} \parencite{jamieson2015nonstochastic}. Here the optimization process begins as a random search with periodical pruning of lower performing trials, therefore saving time and computational resources. 
+
+\subparagraph{HyperBand}
+This algorithm is based on bandit-based optimization, solving the issue of time allocation \textit{in lieu} of search time. As an example, \textit{successive halving} incurs on an issue regarding whether to allocate a large part of the time budget on exploring a large number of solutions rather than tuning a small number of them \parencite{elshawi2019automated}. \textit{HyperBand} attempts to solve this issue by partitioning the original time budget into smaller time and budget combinations and using \textit{successive halving} on each configuration \parencite{li2016hyperband}.
+
+\subparagraph{BOHB (Bayesian Optimization and HyperBand)}
+This algorithm is a combination of bayesian optimization and HyperBand, bringing together the best of both black-box and multi-fidelity optimization algorithms \parencite{pmlr-v80-falkner18a}. This algorithm works using a initial stage of successive halving (HyperBand), which optimizes a given function quickly, using early termination and parallel computation, while at the same time building a probability model using the results from said stage, which it uses in a second stage, significantly improving the speed at which the hyper parameters converge to optimal configurations.
+
+\paragraph{Learning Curve Modelling}
+Within more specific tasks (such as \acrfull{dnn}), \acrshort{hpo} can be performed by modelling the learning curve of a given function or network and using this model to extrapolate optimal hyper parameter values \parencite{10.5555/2832581.2832731}. As this type of optimization is outside the scope of this project (seeing as it is meant to handle general functions), we do not investigate this optimization algorithm typology further.
