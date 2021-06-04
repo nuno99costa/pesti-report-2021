@@ -22,18 +22,55 @@ With this information, a few goals were defined for this internship:
 
 \subsubsection{Domain Concepts}
 
-This project contains various well defined concepts that are translated into the software domain model, here we define these concepts and define the interactions between them.
+This project contains various well defined concepts that are translated into the software domain model and here we define these concepts and the interactions between them.
 
-\paragraph{Hyperparameter}
+\paragraph{Hyper Parameter}
 
-One such concept is the hyper parameter. This is usually a range (continous or not) that defines the possible values for a given hyper parameter of the optimizable function. All hyperparameters related to a give function can be translated into software as a ConfigSpace object, which is a simple python package to manage configuration spaces for algorithm configuration and hyperparameter optimization tasks \parencite{BOAH}. 
+One such concept is the hyper parameter. We can consider this to be a value that the optimizable function uses and which cannot be derived from the data the function operates on. In the scope of this project, the hyper parameter is what is available to the program to optimize the metric of a function through the definition of a \textit{ConfigSpace} object and is not directly defined. 
 
-\paragraph{Optimizer Algorithm}
+\paragraph{Search Space}
+
+This is usually a range (which may be continuous or discrete) that defines the possible values for a given hyper parameter of an optimizable function. All hyper parameter search spaces related to a given function can be translated into software as a ConfigSpace object, which is a simple python package to manage search spaces for algorithm configuration and hyper parameter optimization tasks \parencite{BOAH}.
+
+\paragraph{Search Algorithm}
+
+In order to optimize a given set of hyper parameters and their respective function, there is a need for a search algorithm, which provides suggestions for better hyper parameter values. In the scope of this project and of the Ray Tune framework, these search algorithms are wrappers around open-source optimization libraries, which provide access to algorithms such as BOHB, HyperBand, and others \parencite{ray}.
 
 \paragraph{Optimizable Function}
 
+Finally, we also define an optimizable function, which, within the scope of this project, receives a set of hyper parameter values and returns (once or multiple times) one or more metrics, which provide feedback on the effect of the hyper parameter values on the success of the function.
+
 \subsubsection{Domain Model}
 
-The developed system is constituted by a pre-existing framework, a few Python modules to handle communication and the Faro CAM2 software, which connects to the Python modules through a REST API.
+We can model the previously mentioned concepts (see Figure \ref{fig:domain_model}). As we can see in the model, although both the search spaces and optimizables options are separate entities, they are used in the search algorithm as part of the optimization process. We also note the definition of the optimizable function; although it doesn't have parameters defined, it does define the actual value calculation for the success of a given hyper parameter, which is reflected in further diagrams.
 
-\todo{Nuno:\\Add domain model diagram here}
+\begin{figure}[h]
+	\resizebox{\textwidth}{!}{
+		\begin{tikzpicture}
+		  \begin{class}{Search Space}{10,1.15}
+		  	\attribute{name}
+		  	\attribute{type}
+		    \attribute{minimum value}
+		    \attribute{maximum value}
+		    \attribute{quantization factor}
+		    \attribute{list of possible values}
+		  \end{class}
+		  \umlnote(note_search_space)at(15,1.15){The parameters in the search space class are optional. The quantization factor, minimum and maximum value are available to continuous hyper parameters, while the list of possible values is available to discrete hyper parameters};
+		  \begin{class}{Search Algorithm}{5,-5}
+		  	\attribute{name}
+		    \attribute{list of configuration values}
+		    \attribute{tracked metric}
+		    \attribute{optimization mode}
+		  \end{class}
+		  \umlnote(note_search_alg)at(10,-5){Each search algorithm can have different configuration parameters. As such, we refer to them here as a list of values. Common parameters between all algorithms are presented.};
+		  \begin{class}{Optimizable Function}{0,0}
+		  	\attribute{name}
+		  \end{class}
+		  \draw[umlcd style dashed line, <-] (Search Space) --node[above, sloped, black]{ defines } (Optimizable Function);
+		  \draw[umlcd style dashed line, ->] (Search Algorithm.north) ++(1,0) -- ++(0,1) -- node[above, sloped, black]{ uses } ++(4,0) -| (Search Space);
+		  \draw[umlcd style dashed line, <-] (Optimizable Function.south) -- ++(0,-1) -- node[above, sloped, black]{ uses } ++(4,0) -| (Search Algorithm);
+		\end{tikzpicture}
+	}
+	\caption{Domain Model}
+	\label{fig:domain_model}
+\end{figure}
