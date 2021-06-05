@@ -6,6 +6,10 @@
 
 We can arrange the defined requirements using the \acrfull{furps} model \parencite{furps}.
 
+\subsubsection{Functionality}
+
+These constraints define the capability, reusability and security of a given project or application. In the scope of this project we can define the following requirements:
+
 \begin{itemize}
 	\item A privileged developer can integrate new \acrshort{hpo} algorithms into the framework.
 	\item A developer can select which optimization algorithms will be ran.
@@ -15,20 +19,13 @@ We can arrange the defined requirements using the \acrfull{furps} model \parenci
 
 Here we define a privileged developer as a developer who is connected to the development of the framework.
 
-\subsubsection{Functionality}
-
-These constraints define the capability, reusability and security of a given project or application. In the scope of this project we can define the following requirements:
-
-\begin{itemize}
-	\item 
-\end{itemize}
-
 \subsubsection{Usability}
 
 These constraints define how the interaction between a user and the program occurs, as well as, for example, the available documentation. In the scope of this project we can define the following requirements:
 
 \begin{itemize}
-	\item 
+	\item There should be comprehensive documentation on how the system functions and how a user interacts with it.
+	\item There should be pre-existing examples of usage of the system.
 \end{itemize}
 
 \subsubsection{Reliability}
@@ -36,7 +33,8 @@ These constraints define how the interaction between a user and the program occu
 These constraints define important factors such as the availability and robustness of the system, as well as it's accuracy and stability. In the scope of this project we can define the following requirements:
 
 \begin{itemize}
-	\item 
+	\item The system should be able to recover from external failures (eg.\ issues with CAM2\textsuperscript{\textregistered}).
+	\item The system should be able to save it's state in order to allow for interruptions in the execution.
 \end{itemize}
 
 \subsubsection{Performance}
@@ -44,7 +42,9 @@ These constraints define important factors such as the availability and robustne
 These constraints define what the expected performance of a given application is, using metrics such as speed, efficiency, resources consumption and others. In the scope of this project we can define the following requirements:
 
 \begin{itemize}
-	\item 
+	\item The software should be faster than the CAM2\textsuperscript{\textregistered} software.
+	\item The software should be efficient in such a way that it doesn't interfere with the CAM2\textsuperscript{\textregistered} software.
+	\item The system should consume as little resources as possible, allowing for it to be run directly in the developer's issued laptop, without interfering with other programs.
 \end{itemize}
 
 \subsubsection{Supportability}
@@ -52,12 +52,17 @@ These constraints define what the expected performance of a given application is
 These constraints define how easily the developed project is supported and used by others. To do this, we can define goals regarding testability, modifiability, installability and others. In the scope of this project we can define the following requirements:
 
 \begin{itemize}
-	\item 
+	\item The developed code should include meaningful testing, insuring the correct operation of the software.
+	\item The developed system should allow for extending it's usage to new algorithms and optimizable functions.
+	\item The developer should be able to define their preferred configuration when executing the software.
+	\item The software should be installable in any of \faro's issued laptop easily.
 \end{itemize}
 
 \subsubsection{Design Constraints}
 
 These constraints define the design of a system and may include programming languages, software processes, tool usage and others. In the scope of this project we can define the following requirements:
+
+\todo[color=magenta]{Hooshiar:\\I think there aren't any design constraints. Most of what I think are design constraints fit better into implementation constraints.}
 
 \begin{itemize}
 	\item The developed application must be implemented in Python.
@@ -68,9 +73,12 @@ These constraints define the design of a system and may include programming lang
 These constraints define how the project is developed and may include required standards, resources limitations and others. In the scope of this project we can define the following requirements:
 
 \begin{itemize}
-	\item Execution of the application must be possible using the standard company issued laptop.
+	\item The developed application must executed with minimal resource allocation (with regards to CPU usage and RAM allocation).
 	\item The developed application must be able to execute in a Windows environment.
 \end{itemize}
+
+
+\todo[color=magenta]{Hooshiar:\\Is there a specific standard or coding convention that Faro follows? Should I follow the \textit{de facto} Python standard?}
 
 \subsubsection{Interface Constraints} 
 
@@ -86,5 +94,5 @@ These constraints define how the communication between various components of the
 These constraints define the physical limitations for the system. Such constraints can be material, shape or weight specifications when referring to a hardware project but also refer to, for example, network requirements or topology when referring to software projects. In the scope of this project we can define the following requirements:
 
 \begin{itemize}
-	\item 
+	\item The developed system should be executed in the same network as the CAM2\textsuperscript{\textregistered} integrated web server 
 \end{itemize}
