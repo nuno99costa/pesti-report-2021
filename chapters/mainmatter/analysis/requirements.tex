@@ -1,16 +1,10 @@
 %!TEX root = ../../../main.tex
 
-\subsection{Functional and Non-functional Requirements}
+\subsection{Requirements}
 
 \todo[color=magenta]{Hooshiar:\\Please take a look here and confirm that these requirements are correct and complete.}
 
-We can arrange the defined requirements based on their typology, regarding whether they are directly impacting the project (e.g.\ features) or if they are used to specify the criteria for the success of the system (e.g.\ failure tolerance, uptime and others). With this, we defined the requirements for this project based on these definitions.
-
-\subsubsection{Functional Requirements}
-
-Initially four use cases where defined:
-
-\todo[color=green]{Professor:\\Is this sufficiently developed? Do I need any more "use cases"? Due to the very direct approach to the project (optimize this function) there isn't a lot of uses cases.}
+We can arrange the defined requirements using the \acrfull{furps} model \parencite{furps}.
 
 \begin{itemize}
 	\item A privileged developer can integrate new \acrshort{hpo} algorithms into the framework.
@@ -21,32 +15,76 @@ Initially four use cases where defined:
 
 Here we define a privileged developer as a developer who is connected to the development of the framework.
 
-\subsubsection{Non-functional Requirements}
+\subsubsection{Functionality}
 
-\paragraph{Usability}
+These constraints define the capability, reusability and security of a given project or application. In the scope of this project we can define the following requirements:
 
-\paragraph{Reliability}
+\begin{itemize}
+	\item 
+\end{itemize}
 
-\paragraph{Performance}
+\subsubsection{Usability}
 
-\paragraph{Supportability}
+These constraints define how the interaction between a user and the program occurs, as well as, for example, the available documentation. In the scope of this project we can define the following requirements:
 
-\paragraph{Implementation Constraints} 
+\begin{itemize}
+	\item 
+\end{itemize}
 
-These constraints define how the project is developed. They can, for instance, to define used coding standards and conventions.
+\subsubsection{Reliability}
+
+These constraints define important factors such as the availability and robustness of the system, as well as it's accuracy and stability. In the scope of this project we can define the following requirements:
+
+\begin{itemize}
+	\item 
+\end{itemize}
+
+\subsubsection{Performance}
+
+These constraints define what the expected performance of a given application is, using metrics such as speed, efficiency, resources consumption and others. In the scope of this project we can define the following requirements:
+
+\begin{itemize}
+	\item 
+\end{itemize}
+
+\subsubsection{Supportability}
+
+These constraints define how easily the developed project is supported and used by others. To do this, we can define goals regarding testability, modifiability, installability and others. In the scope of this project we can define the following requirements:
+
+\begin{itemize}
+	\item 
+\end{itemize}
+
+\subsubsection{Design Constraints}
+
+These constraints define the design of a system and may include programming languages, software processes, tool usage and others. In the scope of this project we can define the following requirements:
 
 \begin{itemize}
 	\item The developed application must be implemented in Python.
-	\item Execution of the application must be possible using the standard company issued laptop.
 \end{itemize}
 
-\paragraph{Interface Constraints} 
+\subsubsection{Implementation Constraints} 
 
-These define how the communication between various components of the project is executed. With this, we can define constraints based on the communication between the CAM2\textsuperscript{\textregistered} software and the developed project:
+These constraints define how the project is developed and may include required standards, resources limitations and others. In the scope of this project we can define the following requirements:
+
+\begin{itemize}
+	\item Execution of the application must be possible using the standard company issued laptop.
+	\item The developed application must be able to execute in a Windows environment.
+\end{itemize}
+
+\subsubsection{Interface Constraints} 
+
+These constraints define how the communication between various components of the project is executed. Within the scope of this project, we can define constraints based on the communication between the CAM2\textsuperscript{\textregistered} software and the developed project:
 
 \begin{itemize}
 	\item The optimization pipeline must allow communication with the CAM2\textsuperscript{\textregistered} integrated web server.
 	\item Said communication must be executed through HTTP, using pre existing endpoints.
 \end{itemize}
 
+\subsubsection{Physical Constraints}
 
+These constraints define the physical limitations for the system. Such constraints can be material, shape or weight specifications when referring to a hardware project but also refer to, for example, network requirements or topology when referring to software projects. In the scope of this project we can define the following requirements:
+
+\begin{itemize}
+	\item 
+\end{itemize}
