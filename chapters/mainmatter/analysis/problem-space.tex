@@ -40,6 +40,7 @@ In order to optimize a given set of hyper parameters and their respective functi
 
 Finally, we also define an optimizable function, which, within the scope of this project, receives a set of hyper parameter values and returns (once or multiple times) one or more metrics, which provide feedback on the effect of the hyper parameter values on the success of the function.
 
+\newpage
 \subsubsection{Domain Model}
 
 We can model the previously mentioned concepts (see Figure \ref{fig:domain_model}). As we can see in the model, although both the search spaces and optimizables options are separate entities, they are used in the search algorithm as part of the optimization process. We also note the definition of the optimizable function; although it doesn't have parameters defined, it does define the actual value calculation for the success of a given hyper parameter, which is reflected in further diagrams.
@@ -68,7 +69,7 @@ We can model the previously mentioned concepts (see Figure \ref{fig:domain_model
 		  \end{class}
 		  \draw[umlcd style dashed line, <-] (Search Space) --node[above, sloped, black]{ defines } (Optimizable Function);
 		  \draw[umlcd style dashed line, ->] (Search Algorithm.north) ++(1,0) -- ++(0,1) -- node[above, sloped, black]{ uses } ++(4,0) -| (Search Space);
-		  \draw[umlcd style dashed line, <-] (Optimizable Function.south) -- ++(0,-1) -- node[above, sloped, black]{ uses } ++(4,0) -| (Search Algorithm);
+		  \draw[umlcd style dashed line, <-] (Optimizable Function.south) -- ++(0,-2.75) -- node[above, sloped, black]{ uses } ++(4.5,0) -| (Search Algorithm);
 		\end{tikzpicture}
 	}
 	\caption{Domain Model}
