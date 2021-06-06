@@ -6,7 +6,7 @@ Automated \acrshort{hpo} approaches can be separated by their approaches with re
 
 Not all available algorithms were researched, focusing instead on different approaches, usage across the \acrshort{machinel} field and historic significance.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.75\textwidth]{images/state_art-taxonomy_optimizers.png}
 	\caption{A Taxonomy for the Hyper-parameter Optimization Techniques \parencite{elshawi2019automated}.}
@@ -20,7 +20,7 @@ Black-box optimization algorithms treats the problem functions as black-boxes (a
 \subparagraph{Grid Search}
 Traditionally grid search is used for \acrshort{hpo} \parencite{liashchynskyi2019grid} whereas a researcher or developer predefines possible values for a given hyper parameter and tests every hyper parameter combination from the solution space provided (see Figure \ref{grid}).
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\begin{tikzpicture}
 		\begin{axis}[
@@ -62,7 +62,7 @@ Traditionally grid search is used for \acrshort{hpo} \parencite{liashchynskyi201
 
 \subparagraph{Random Search} This method is similar to grid search, but replaces manually set values with ranges and allows for randomized selection of hyper parameter values (see Figure \ref{random}). This method has been proven to be more efficient than grid search \parencite{JMLR:v13:bergstra12a}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\begin{tikzpicture}
 		\begin{axis}[
@@ -133,7 +133,7 @@ A area of increased attention in the \acrshort{hpo} research field is multi-fide
 These techniques are based on the \textit{multi-armed bandit problem}, whereas a limited set of resources must be allocated between competing choices, maximizing expected gain \parencite{Katehakis1987TheMB}. Similarly, using this class of algorithms in \acrshort{hpo} allows computers to stop the execution of a trial (with defined hyper parameter values), by analysing observable features during the run. This also leads to a decrease in computational power and time required to tune hyper parameters. 
 
 \subparagraph{Successive Halving} 
-This algorithm is an example of bandit-based approach to \acrshort{hpo} \parencite{jamieson2015nonstochastic}. Here the optimization process begins as a random search with periodical pruning of lower performing trials, therefore saving time and computational resources. 
+This algorithm is an example of a bandit-based approach to the \acrshort{hpo} problem \parencite{jamieson2015nonstochastic}. Here the optimization process begins as a random search with periodical pruning of lower performing trials, therefore saving time and computational resources. 
 
 \subparagraph{HyperBand}
 This algorithm is based on bandit-based optimization, solving the issue of time allocation \textit{in lieu} of search time. As an example, \textit{successive halving} incurs on an issue regarding whether to allocate a large part of the time budget on exploring a large number of solutions rather than tuning a small number of them \parencite{elshawi2019automated}. \textit{HyperBand} attempts to solve this issue by partitioning the original time budget into smaller time and budget combinations and using \textit{successive halving} on each configuration \parencite{li2016hyperband}.
