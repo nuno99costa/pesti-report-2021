@@ -15,7 +15,8 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v2
       - name: Workaround script for xindy
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
         run: |
           content="$(tail -n +3 .github/workflows/texlive_workaround.sh)"
           content="${content//'%'/'%25'}"
