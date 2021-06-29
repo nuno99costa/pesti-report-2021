@@ -9,15 +9,41 @@
 \usepackage{tikz}
 \usepackage{xcolor}
 \usepackage{geometry}
+%\usepackage[includeheadfoot,bmargin=1in, tmargin= 0.5in]{geometry}
 \usepackage{subfig}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
-\usepackage[ group-separator = {,}]{siunitx}
+\usepackage[group-separator = {,}]{siunitx}
 \usepackage[usestackEOL]{stackengine}
 \usepackage{ragged2e}
-\usepackage{graphicx}
 \usepackage{todonotes}
-\usepackage{tikz}
 \usepackage{csquotes}
 \usepackage{pgfplots}
 \usepackage{pgf-umlcd}
+\usepackage{placeins}
+\usepackage{rotating}
+\usepackage{pdfpages}
+\usepackage{xcolor}
+\definecolor{commentgreen}{RGB}{2,112,10}
+\definecolor{eminence}{RGB}{108,48,130}
+\usepackage{listings}
+\lstset {
+    frame=tb,
+    tabsize=4,
+    showstringspaces=false,
+    numbers=left,
+    commentstyle=\color{commentgreen},
+    keywordstyle=\color{eminence},
+    stringstyle=\color{red},
+    basicstyle=\small\ttfamily,
+    emph={int,char,double,float,unsigned,void,bool},
+    emphstyle={\color{blue}},
+    escapechar=\&,
+    classoffset=1, % starting new class
+    otherkeywords={>,<,.,;,-,!,=,~},
+    morekeywords={>,<,.,;,-,!,=,~},
+    keywordstyle=\color{weborange},
+    classoffset=0,
+    captionpos=b,
+    breaklines=true
+}

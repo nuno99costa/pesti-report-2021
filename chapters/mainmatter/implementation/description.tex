@@ -1,3 +1,84 @@
 %!TEX root = ../../../main.tex
 
 \subsection{Description}
+
+In this section, we describe the implementation of the proposed solution. The first subsection explains the initial configuration of the development and production environment. The following section exposes the code implementation.
+
+\subsubsection{Environment Configuration}
+
+The project was developed in Python, and as such a Python environment was required to develop and deploy. It was also necessary to prepare the \acrshort{cam2} software package to connect to the developed software.
+
+\paragraph{Python Environment}
+
+Initially a Docker container was used, as there was issues with Windows and certain Python libraries used by Ray Tune. This Docker container, based on a \acrfull{alp}, contained the necessary software packages, runtime environments as well as the Python packages required to run Ray Tune.
+
+Further into the development process it became possible to use Ray Tune in the developers laptop and as such we moved development away from Docker and into a \acrfull{anaconda}. This allowed us to remove unnecessary complexity from the developed system. Although \acrshort{anaconda} does provide virtual environment capabilities, these were not used in this project as there was only one ``container'' in usage and therefore only one virtual environment. This environment can be activated and accessed as seen in the code excerpt \ref{lst:anaconda}.
+
+\begin{lstlisting}[language=Python, caption=Managing a Conda environment, captionpos=b, label={lst:anaconda}]
+#Create a Conda environment
+conda create --name {environment_name}
+
+#Activate a Conda environment
+conda activate {environment_name}
+
+#Install package in a Conda environment
+conda install {package_name}
+\end{lstlisting}
+
+The developed tool requires a variety of Python packages. The most important ones are the Ray framework and its dependencies, the dependencies required for each of the usable optimization algorithms (which are not included in the default Ray installation) and the HTTP Requests library, required for the connection between the Python tool and the \acrshort{cam2} application. In order to manage these dependencies, we have used a requirements text file, containing the required packages. This allows for any developer, even if not using \acrshort{anaconda}, can quickly install the required dependencies. This requirement text file is part of the available features of the \acrfull{pip}.
+
+\begin{lstlisting}[language=Python, caption=Requirement text file example, captionpos=b, label={lst:req}]
+ray~=1.2.0
+requests~=2.25.1
+urllib3
+\end{lstlisting}
+
+
+\paragraph{\acrshort{cam2} Configuration}
+
+To enable the web server within \acrshort{cam2}, we first needed to download the development version of the software and start it using the command in the code excerpt \ref{lst:cam2}.
+
+\begin{lstlisting}[language=Python, caption=Start \acrshort{cam2} with web server enabled, captionpos=b, label={lst:cam2}]
+C:\ProgramData\FARO Technologies\InTouch\Applications\CAM2\11.46.93\FARO.CAM2.exe -Automate
+\end{lstlisting}
+
+\subsubsection{Code Implementation}
+
+We split the code implementation into 3 different and important parts: the search space (used to define the optimizable functions parameters), the CAM2 interface, used to connect to the \acrshort{cam2} software) and the individual tuning setup (which defines the setup for executing an optimization run using a specified optimizable algorithm).
+
+\paragraph{Search Spaces}
+
+To create a search space, Ray Tune specifies a native interface. You can specify this search space when setting up a tuning session, using the \verb!config! parameter in the \verb!tune.run! method. This parameter consists of a dictionary, a Python data structure where data is stored in key:value pairs - in this framework, the keys are the hyper parameter names and the values are the possible values for the hyper parameter. An example of this parameter usage can be found in the code excerpt \ref{lst:searchspace}. Ray Tune allows to define hyper parameter search spaces as a single value, a list of values and as a random extraction from a value space or function. Throughout this internship, we have only used the \verb!quniform! search space function, which defines a search space quantized between two numbers, with a custom quantization factor. This was necessary because the optimizable function requires integer values for its hyper parameters (max iterations and sample size), and as such we have used the previously mentioned function with a quantization factor of 1.
+
+
+\begin{lstlisting}[language=Python, caption=Example Ray Tune configuration, captionpos=b, label={lst:searchspace}]
+config = {
+    "param1": 100,
+    "param2": tune.uniform(10, 100),
+    "param3": tune.quniform(0, 100,1),
+    "param4": tune.choice(["choice1", "choice2", "choice2"]),
+
+}
+\end{lstlisting}
+
+\paragraph{\acrshort{cam2} Interface}
+
+To execute a \acrshort{pca} in \acrshort{cam2} we need to perform 2 actions: load the \acrshort{fcd} file and initiate the \acrshort{pca} functionality. This 2 step provided some challenges, seeing as there is no straight forward way to know which file is loaded into the CAM2 software. Overall we also found issues due to \acrshort{cam2} keeping files in memory, which creates some instability with larger files and further along the tuning session.
+
+To fix these issues, we implemented a actor, which we will further define in the following paragraph, and added fail safes, which allow the develoepr to restart the \acrshort{cam2}, if necessary, without stopping the training process. These fail safes can be seen in the code excerpt \ref{lst:cam2_interface}. Beside these measures, Ray Tune also automatically saves each trial run, and as such, in case of an error, we can restart or rerun a trial.
+
+\begin{lstlisting}[language=Python, caption=\acrshort{cam2} Interface, captionpos=b, label={lst:cam2_interface}]
+MISSING
+\end{lstlisting}
+
+\subparagraph{Ray Tune Actor}
+
+\paragraph{Tuning Setup}
+
+\subparagraph{Trainable Object}
+\subparagraph{Scheduler}
+\subparagraph{Algorithm}
+\subparagraph{Resources}
+\subparagraph{Stop Criteria (?)}
+\subparagraph{Metric Tracking}
+\subparagraph{Logger}

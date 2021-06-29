@@ -6,11 +6,7 @@ The initial proposition for this internship was to develop a framework to allow 
 
 To ascertain that the developed framework was working as intended and to guide development efforts, a specific function was used as a proof of concept. This function, henceforth referenced as the \acrfull{pca} function, aligns a point cloud and produces an accuracy result for the alignment made. The \acrshort{pca} function includes two parameters, max iterations and sample size, which where previously defined and now are the subject to optimization.
 
-This setup has one main problem, that extends to every other function that has statically defined parameters that are not know to be perfect:
-
-\begin{itemize}
-	\item Improving upon the pre-existing function's parameters is a time consuming, manual process, as a developer would have to continuously run a given function, changing parameters each time and attempting to guide their search according to their results
-\end{itemize}
+This setup has one main problem, that extends to every other function that has statically defined parameters that are not know to be perfect: improving upon a pre-existing function's parameters is a time consuming, manual process, as a developer would have to continuously run a given function, changing parameters each time and attempting to guide their search according to their results.
 
 With this information, a few goals were defined for this internship:
 
@@ -42,7 +38,7 @@ Finally, we also define an optimizable function, which, within the scope of this
 
 \subsubsection{Domain Model}
 
-We can model the previously mentioned concepts (see Figure \ref{fig:domain_model}). As we can see in the model, although both the search spaces and optimizables options are separate entities, they are used in the search algorithm as part of the optimization process. We also note the definition of the optimizable function; although it doesn't have parameters defined, it does define the actual value calculation for the success of a given hyper parameter, which is reflected in further diagrams.
+We can model the previously mentioned concepts (see Figure \ref{fig:domain_model}). As we can see in the model, although both the search spaces and optimizables options are separate entities, they are used in the search algorithm as part of the optimization process. We also note the definition of the optimizable function; although it does not have parameters defined, it does define the actual value calculation for the success of a given hyper parameter, which is reflected in further diagrams.
 
 \begin{figure}[ht]
 	\resizebox{0.95\textwidth}{!}{

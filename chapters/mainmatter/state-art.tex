@@ -2,11 +2,17 @@
 
 \section{State of the Art}
 
-Every \acrshort{machinel} algorithm has hyper parameters \parencite[ch.\ 1]{Feurer2019} which control the learning process. These parameters also exist in other algorithms (e.g.\ population control parameters in evolutionary algorithms \parencite{ptuningevo2011}). These parameters are usually relevant to the final result of training an algorithm \parencite{Bergstra2012}. \todo{Change this to discuss other topics besides HPO (virtualization, APIs, other?).}
+This project integrated different software technologies and fields, molding a new tool that fit the particular use case at \faro. Besides the main topic of this internship \acrshort{hpo}, other technologies and services were used during the development process.
 
-Hyper parameters can be set to default values (usually handled by the software packages used) or to community accepted values (usually based on experience and previous literature). This approach is usually discarded when the number of parameters is increased (as the community can't test and validate all hyper parameter values).
+Every \acrshort{machinel} algorithm has hyper parameters \parencite[ch.\ 1]{Feurer2019} which control the learning process. These parameters also exist in other algorithms (e.g.\ population control parameters in evolutionary algorithms \parencite{ptuningevo2011}). These parameters are usually relevant to the final result of training an algorithm \parencite{Bergstra2012}.
+
+Hyper parameters can be set to default values (usually handled by the software packages used) or to community accepted values (usually based on experience and previous literature). This approach is usually discarded when the number of parameters is increased (as the community is unable to test and validate all hyper parameter values).
 
 With the advancements of technology and machine learning research, new approaches to \acrshort{hpo} were developed that allow for searching the solution space (hyper parameter possible values) in an automated way.
+
+Sometimes it was also necessary to virtualize the environment in which the software ran, and as such it was necessary to select a solution for this problem, taking into account performance overheads, as well as the level of virtualization required. 
+
+Finally, it was also necessary to visualize the produced data in a graphical way, in order to quickly and thoroughly evaluate the benefits provided by the developed tool, as well as allowing further insight into what could be the next steps towards optimizing a given algorithm.
 
 \input{chapters/mainmatter/state-art/related-works}
 

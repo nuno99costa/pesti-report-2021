@@ -104,21 +104,21 @@ Bayesian optimization can be described as sequential model-based optimization, w
 
 Various probabilistic regression models can be used (e.g. Gaussian Processes and Random Forests). One of these regression models, Tree Parzen Estimators, deviates from the standard regression models, which use a predictive distribution $p(y|x)$. Instead, it creates two density functions that act as generative models for all domain variables \parencite{NIPS2011_86e8f7ab}\parencite{elshawi2019automated}.
 
-\subparagraph{Genetic Algorithms}
-
-This set of optimization methods use algorithms inspired by biological evolution.
-
-These algorithms are usually based on the idea of applying the multiple genetic operations (crossover, mutation, survival of the fittest) to a population of configurations \parencite{elshawi2019automated}.
-
 \subparagraph{Population-based Optimization}
 
 This optimization technique is a hybrid of two methods of \acrshort{hpo}: random search and hand-tuning.
 
 It starts by training a number of individual algorithms with random hyper parameters. But, instead of each algorithm working individually, they share information between them, to refine parameters and manage computational resources to solution sets that show promising results \parencite{jaderberg2017population}.
 
+\subparagraph{Genetic Algorithms}
+
+This set of optimization methods use algorithms inspired by biological evolution.
+
+These algorithms are usually based on the idea of applying the multiple genetic operations (crossover, mutation, survival of the fittest) to a population of configurations \parencite{elshawi2019automated}.
+
 \subparagraph{Gradient-based Optimization}
 
-This algorithm uses the gradient of the model selection criterion with respect to the hyper parameters \parencite{bengio2000}. This algorithm is unsuitable when the optimizable function is treated as a black box function (where we only have access to  it's output and inputs).
+This algorithm uses the gradient of the model selection criterion with respect to the hyper parameters \parencite{bengio2000}. This algorithm is unsuitable when the optimizable function is treated as a black box function (where we only have access to  its output and inputs).
 
 \subparagraph{Spectral Optimization}
 
@@ -126,7 +126,7 @@ This algorithm is inspired by techniques used in analysis of Boolean functions \
 
 \subsubsection{Multi-Fidelity Optimization Algorithms}
 
-A area of increased attention in the \acrshort{hpo} research field is multi-fidelity techniques. These methods focus on decreasing the evaluation cost of a given function by combining cheap low-fidelity and expensive high-fidelity evaluations \parencite{elshawi2019automated}. These techniques are essential for optimization in high cost functions, where optimizing one hyper parameter can take days.
+An area of increased attention in the \acrshort{hpo} research field is multi-fidelity techniques. These methods focus on decreasing the evaluation cost of a given function by combining cheap low-fidelity and expensive high-fidelity evaluations \parencite{elshawi2019automated}. These techniques are essential for optimization in high cost functions, where optimizing one hyper parameter can take days.
 
 \paragraph{Bandit-based Optimization}
 

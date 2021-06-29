@@ -14,7 +14,7 @@ Due to the academic nature of the development of \acrshort{hpo} frameworks, ther
 
 \paragraph{HpBandSter} This \acrshort{python} package, developed by the AutoML team, implements a distributed HyperBand algorithm, allowing for parallelization of the \acrshort{hpo} \parencite{hpbandster}. It also implements BOHB, which combines bayesian optimization and HyperBand \parencite{pmlr-v80-falkner18a}.
 
-\paragraph{hyperopt} This \acrshort{python} library is intended to be used for serial and parallel \acrshort{hpo} \parencite{hyperopt}. It implements random search and tree parzen estimators. It's parallelization feature can be executed using Apache Spark or MongoDB.
+\paragraph{hyperopt} This \acrshort{python} library is intended to be used for serial and parallel \acrshort{hpo} \parencite{hyperopt}. It implements random search and tree parzen estimators. Its parallelization feature can be executed using Apache Spark or MongoDB.
 
 \paragraph{scikit-learn} This framework is one of the most popular frameworks for machine learning in \acrshort{python}. It implements a full development pipeline for machine learning, including \acrshort{hpo} \parencite{scikit-learn}. It implements grid search, random search and successive halving as default available optimization algorithms. It also has community developed add-on algorithms, such as Auto-sklearn \parencite{auto-sklearn} and scikit-optimize \parencite{scikit-optimize}.
 
@@ -26,25 +26,25 @@ Due to the academic nature of the development of \acrshort{hpo} frameworks, ther
 
 \begin{figure}[hb]
 \centering
-\begin{tabular}{cccc}
-\subfloat[Determined AI]{\includegraphics[width = 1.3in]{images/determined.png}} &
-\subfloat[AutoML]{\includegraphics[width = 1.3in]{images/automl.png}} &
-\subfloat[HyperOpt]{\includegraphics[width = 1.3in]{images/hyperopt.png}} &
-\subfloat[Scikit Learn]{\includegraphics[width = 1.3in]{images/scikit.png}} \\
-\subfloat[Ray Tune]{\includegraphics[width = 1.3in]{images/ray_tune.png}} &
-\subfloat[Amazon Sagemaker]{\includegraphics[width = 1.3in]{images/sagemaker.png}} &
-\subfloat[Google HyperTune]{\includegraphics[width = 1.3in]{images/google_ai.png}}
+\begin{tabular}{ccccc}
+\subfloat[DeterminedAI]{\includegraphics[width = 1in]{images/determined.png}} &
+\subfloat[AutoML]{\includegraphics[width = 1in]{images/automl.png}} &
+\subfloat[HyperOpt]{\includegraphics[width = 1in]{images/hyperopt.png}} &
+\subfloat[Scikit Learn]{\includegraphics[width = 1in]{images/scikit.png}} &
+\subfloat[Ray Tune]{\includegraphics[width = 1in]{images/ray_tune.png}} \\
+\subfloat[Amazon Sagemaker]{\includegraphics[width = 0.9in]{images/sagemaker.png}} &
+\subfloat[Google HyperTune]{\includegraphics[width = 0.9in]{images/google_ai.png}}
 \end{tabular}
 \caption{Hyper Parameter Optimization Libraries}
 \end{figure}
 
+\FloatBarrier
+
 \subsubsection{Virtualization}
 
-\todo[color=green]{Professor:\\Should I keep this? Initially used Docker, moved to Anaconda on Windows later}
+As a part of the development of the software solution, it was necessary to implement a virtualization mechanism to harmonize the development environment (\acrshort{win}) and the target \acrfull{os} of the Ray framework (Linux). These techniques can be separated on the level at which they operate - hardware virtualization, desktop virtualization and \acrshort{os}-level virtualization. Here we focus our research on \acrshort{os}-level virtualization, as it was at this level (where we are able to run another \acrshort{os}) that the solution was developed on.
 
-As a part of the development of the software solution, it was necessary to implement a virtualization mechanism to harmonize the development environment (Windows) and the target \acrfull{os} of the Ray framework (Linux). These techniques can be separated on the level at which they operate - hardware virtualization, desktop virtualization and \acrshort{os}-level virtualization. Here we focus our research on \acrshort{os}-level virtualization, as it was at this level (where we are able to run another \acrshort{os}) that the solution was developed on.
-
-\acrshort{os}-level virtualization is a technology that partitions the operating system to create multiple isolated \acrfull{vm} \parencite{10.5555/1571423}. \todo{Should I refer advantages of os-level virtualization?}
+\acrshort{os}-level virtualization is a technology that partitions the operating system to create multiple isolated \acrfull{vm} \parencite{10.5555/1571423}.
 
 \paragraph{Chroot} This Unix operation was initially introduced in 1979. Chroot can be considered to be a rudimentary form of virtualization, as it changes the apparent root directory for the current running process and any software running in this environment cannot access files outside the designated root directory, effectively limiting it's access to a directory tree, while still allowing access to other resources \parencite{foundation_2017}.
 
@@ -64,7 +64,7 @@ As a part of the development of the software solution, it was necessary to imple
 \caption{Commercial Virtualization Products}
 \end{figure}
 
-\todo[color=green]{Professor:\\Should I mention web APIs (used them to connect to CAM2 software), Python modules (the way I use Ray Tune), FURPS model or anything else?}
+\FloatBarrier
 
 \subsubsection{Machine Learning Data Visualization}
 
@@ -76,7 +76,7 @@ wandb is an open source Python library for experiment tracking, dataset versioni
 
 \paragraph{TensorBoard}
 
-This toolkit provides visualization for TensorFlow \parencite{Tensorflow} based projects. It allows for a developer to track and visualize metrics, histograms and more in a intuitive UI.
+This toolkit provides visualization for TensorFlow \parencite{Tensorflow} based projects. It allows for a developer to track and visualize metrics, histograms and more in a intuitive \acrfull{ui}.
 
 \paragraph{Neptune}
 
@@ -96,13 +96,14 @@ Comet.ml enables data scientists and teams to track, compare, explain and optimi
 
 \begin{figure}[hb]
 \centering
-\begin{tabular}{ccc}
-\subfloat[Weights and Biases]{\includegraphics[width = 1.3in]{images/wandb.png}} &
-\subfloat[TensorBoard]{\includegraphics[width = 1.3in]{images/tensorboard.png}} &
-\subfloat[Neptune]{\includegraphics[width = 1.3in]{images/neptune.png}} \\
-\subfloat[Guild AI]{\includegraphics[width = 1.3in]{images/guildai.jpg}} &
-\subfloat[Comet]{\includegraphics[width = 1.3in]{images/coemt.png}}
+\begin{tabular}{ccccc}
+\subfloat[Weights and Biases]{\includegraphics[width = 1in]{images/wandb.png}} &
+\subfloat[TensorBoard]{\includegraphics[width = 1in]{images/tensorboard.png}} &
+\subfloat[Neptune]{\includegraphics[width = 1in]{images/neptune.png}} &
+\subfloat[Guild AI]{\includegraphics[width = 1in]{images/guildai.jpg}} &
+\subfloat[Comet]{\includegraphics[width = 1in]{images/coemt.png}}
 \end{tabular}
 \caption{Machine Learning Data Visualization Tools}
 \end{figure}
 
+\FloatBarrier

@@ -14,6 +14,7 @@
 \makeglossaries
 \input{glossary}
 
+
 %MACROS
 \newcommand{\faro}[0]{FARO\textsuperscript{\textregistered}}
 
@@ -168,6 +169,8 @@
 
 \listoftables
 
+\lstlistoflistings
+
 \printglossary[nonumberlist,title=Glossary and Acronyms]
 
 \newpage
@@ -176,20 +179,37 @@
 
 \input{chapters/mainmatter/introduction}
 
+\FloatBarrier
+
+\newpage
 \input{chapters/mainmatter/state-art}
 
+\FloatBarrier
+
+\newpage
 \input{chapters/mainmatter/analysis}
 
+\FloatBarrier
+
+\newpage
 \input{chapters/mainmatter/design}
+
+\FloatBarrier
 
 \input{chapters/mainmatter/implementation}
 
+\FloatBarrier
+
 \input{chapters/mainmatter/conclusions}
+
+\FloatBarrier
 
 \newpage
 
 \printbibliography
 
 \newpage
+
+\input{chapters/endmatter/appendix}
 
 \end{document}
