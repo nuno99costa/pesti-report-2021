@@ -38,7 +38,7 @@ urllib3
 
 To enable the web server within \acrshort{cam2}, we first needed to download the development version of the software and start it using the command in the code excerpt \ref{lst:cam2}.
 
-\begin{lstlisting}[language=Python, caption=Start \acrshort{cam2} with web server enabled, captionpos=b, label={lst:cam2}]
+\begin{lstlisting}[language=Python, caption=Starting \acrshort{cam2} with web server enabled, captionpos=b, label={lst:cam2}]
 C:\ProgramData\FARO Technologies\InTouch\Applications\CAM2\11.46.93\FARO.CAM2.exe -Automate
 \end{lstlisting}
 
@@ -51,7 +51,7 @@ We split the code implementation into 3 different and important parts: the searc
 To create a search space, Ray Tune specifies a native interface. You can specify this search space when setting up a tuning session, using the \verb!config! parameter in the \verb!tune.run! method. This parameter consists of a dictionary, a Python data structure where data is stored in key:value pairs - in this framework, the keys are the hyper parameter names and the values are the possible values for the hyper parameter. An example of this parameter usage can be found in the code excerpt \ref{lst:searchspace}. Ray Tune allows to define hyper parameter search spaces as a single value, a list of values and as a random extraction from a value space or function. Throughout this internship, we have only used the \verb!quniform! search space function, which defines a search space quantized between two numbers, with a custom quantization factor. This was necessary because the optimizable function requires integer values for its hyper parameters (max iterations and sample size), and as such we have used the previously mentioned function with a quantization factor of 1.
 
 
-\begin{lstlisting}[language=Python, caption=Example Ray Tune configuration, captionpos=b, label={lst:searchspace}]
+\begin{lstlisting}[language=Python, caption=Example Search Space configuration, captionpos=b, label={lst:searchspace}]
 config = {
     "param1": 100,
     "param2": tune.uniform(10, 100),
@@ -65,13 +65,107 @@ config = {
 
 To execute a \acrshort{pca} in \acrshort{cam2} we need to perform 2 actions: load the \acrshort{fcd} file and initiate the \acrshort{pca} functionality. This 2 step provided some challenges, seeing as there is no straight forward way to know which file is loaded into the CAM2 software. Overall we also found issues due to \acrshort{cam2} keeping files in memory, which creates some instability with larger files and further along the tuning session.
 
-To fix these issues, we implemented a actor, which we will further define in the following paragraph, and added fail safes, which allow the develoepr to restart the \acrshort{cam2}, if necessary, without stopping the training process. These fail safes can be seen in the code excerpt \ref{lst:cam2_interface}. Beside these measures, Ray Tune also automatically saves each trial run, and as such, in case of an error, we can restart or rerun a trial.
+The file opening \acrshort{http} request returnsan empty response, with only a status code, usually 202 (the standard response for an accepted HTTP request) or 40* (the usual code for a client error). The former happens when, for example, the file we are trying to open does not exist.
 
-\begin{lstlisting}[language=Python, caption=\acrshort{cam2} Interface, captionpos=b, label={lst:cam2_interface}]
-MISSING
+The \acrshort{pca} \acrshort{http} request returns a \acrshort{json} object, containing the maximum and mean values for the accuracy of the alignment, as you can see in the code excerpt \ref{lst:pcaresp}, as well  usually 202 when succesful, or a empty response and a 40* status code. The former happens when, for example, the open file does not contain the selected point cloud.
+
+\begin{lstlisting}[language=json, caption=Example \acrshort{pca} \acrshort{http} request response, captionpos=b, label={lst:pcaresp}]
+{
+    "max": 3.5536138345337953,
+    "mean": 0.94855826840394786
+}
 \end{lstlisting}
 
+To fix these issues, we implemented a actor, which we will further define in the following paragraph, and added fail safes, which allow the develoepr to restart the \acrshort{cam2}, if necessary, without stopping the training process. These fail safes can be seen in the code excerpt \ref{lst:cam2_pca} and \ref{lst:cam2_file}. Beside these measures, Ray Tune also automatically saves each trial run, and as such, in case of an error, we can restart or rerun a trial.
+
+\begin{lstlisting}[language=Python, caption=Opening a \acrshort{fcd} file in \acrshort{cam2}, captionpos=b, label={lst:cam2_pca}]
+def open_point_cloud_file(file_name):
+    point_cloud_success = True
+    # Grab the current file in CAM2, if available
+    cam2_actor = ray.get_actor("CAM2Actor")
+    try:
+        cam2_file_name = ray.get(cam2_actor.get.remote())
+    except TypeError:
+        cam2_file_name = None
+    # If file in CAM2 doesn't match the needed file, send a open file request
+    if cam2_file_name != file_name or not point_cloud_success:
+        full_path = path + file_name
+        url = open_file_url + full_path
+        while not file_success:
+            file_success = False
+            try:
+                r_file = requests.post(url)
+                file_success = r_file.ok
+                ray.get(cam2_actor.set.remote(file_name))
+            except Exception:
+                print("Issues with CAM2 software connection, please restart the CAM2 software.")
+                time.sleep(5)
+        print("Loaded " + file_name + " into CAM2")
+    else:
+        print(file_name + " is already loaded into CAM2")
+\end{lstlisting}
+
+As you can see, we give appropriate time for a developer to restart \acrshort{cam2} when the file opening \acrshort{http} request fails. Besides this, we also use the actor functionality in Ray Tune (line 4-8).
+
+\begin{lstlisting}[language=Python, caption=Running \acrshort{pca} function in \acrshort{cam2}, captionpos=b, label={lst:cam2_file}]
+def run_point_cloud_alignment(file_name, point_cloud_name, max_iterations, sample_size):
+    file_success = False
+    r_pointcloud = None
+    success = False
+
+    while not success:
+        # Open file, if needed
+        open_point_cloud_file(file_name)
+
+        # Run PCA
+        point_cloud_success = False
+        params = {'pointcloudName': point_cloud_name,
+                  'maxIterations': max_iterations,
+                  'sampleSize': sample_size}
+        while not point_cloud_success:
+            try:
+                r_pointcloud = requests.post(run_alignment_url, params=params)
+                point_cloud_success = r_pointcloud.ok
+                success = True
+            except Exception:
+                input("Issues with CAM2 software connection, please restart the CAM2 software.")
+
+    response_string = r_pointcloud.content.decode("UTF-8")
+    response_dict = ast.literal_eval(response_string)
+    print("Executed PC alignment on " + point_cloud_name
+          + " (max: " + str(response_dict['max'])
+          + ", mean: " + str(response_dict['mean']) + ")")
+    return response_dict
+\end{lstlisting}
+
+Once again, we allow the developer to restart \acrshort{cam2} when the \acrshort{pca} \acrshort{http} request fails.
+
 \subparagraph{Ray Tune Actor}
+
+To accurately keep track of what file is open in the \acrshort{cam2} software within each different trial, we used a Actor, a stateful worker/service within Ray Tune. This service allows us to keep track of what is open on \acrshort{cam2}, without creating issues due to concurrency (where 2 trial runs try to open different files at the same time) or issues with data sharing between processes (where a given trial is unable to share its state with other trials). 
+
+The Actor is defined before the tuning session, as seen in the code excerpt \ref{lst:actor}. After defining an Actor, we are then able to create within the Ray Tune framework and get its current value and update its value from any running trial.
+\newpage
+\begin{lstlisting}[language=Python, caption=Initiating a Ray Tune Actor, captionpos=b, label={lst:actor}]
+# define CAM2 Actor
+@ray.remote
+class CAM2Tracker(object):
+    def __init__(self):
+        self.value = None
+
+    def set(self, value):
+        self.value = value
+        return self.value
+
+    def get(self):
+        return self.value
+
+# initiate the Ray Tune framework
+ray.init()
+
+# create the CAM2 open file tracker Actor
+cam2 = CAM2Tracker.options(name="CAM2Actor").remote()
+\end{lstlisting}
 
 \paragraph{Tuning Setup}
 
