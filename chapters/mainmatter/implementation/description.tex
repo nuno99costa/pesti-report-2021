@@ -1,4 +1,4 @@
-%!TEX root = ../../../main.tex
+%!TEX root=../../../main.tex
 
 \subsection{Description}
 
@@ -52,7 +52,7 @@ To create a search space, Ray Tune specifies a native interface. You can specify
 
 
 \begin{lstlisting}[language=Python, caption=Example Search Space configuration, captionpos=b, label={lst:searchspace}]
-config = {
+config={
     "param1": 100,
     "param2": tune.uniform(10, 100),
     "param3": tune.quniform(0, 100,1),
@@ -80,22 +80,22 @@ To fix these issues, we implemented a actor, which we will further define in the
 
 \begin{lstlisting}[language=Python, caption=Opening a \acrshort{fcd} file in \acrshort{cam2}, captionpos=b, label={lst:cam2_pca}]
 def open_point_cloud_file(file_name):
-    point_cloud_success = True
+    point_cloud_success=True
     # Grab the current file in CAM2, if available
-    cam2_actor = ray.get_actor("CAM2Actor")
+    cam2_actor=ray.get_actor("CAM2Actor")
     try:
-        cam2_file_name = ray.get(cam2_actor.get.remote())
+        cam2_file_name=ray.get(cam2_actor.get.remote())
     except TypeError:
-        cam2_file_name = None
+        cam2_file_name=None
     # If file in CAM2 doesn't match the needed file, send a open file request
     if cam2_file_name != file_name or not point_cloud_success:
-        full_path = path + file_name
-        url = open_file_url + full_path
+        full_path=path + file_name
+        url=open_file_url + full_path
         while not file_success:
-            file_success = False
+            file_success=False
             try:
-                r_file = requests.post(url)
-                file_success = r_file.ok
+                r_file=requests.post(url)
+                file_success=r_file.ok
                 ray.get(cam2_actor.set.remote(file_name))
             except Exception:
                 print("Issues with CAM2 software connection, please restart the CAM2 software.")
@@ -109,29 +109,29 @@ As you can see, we give appropriate time for a developer to restart \acrshort{ca
 
 \begin{lstlisting}[language=Python, caption=Running \acrshort{pca} function in \acrshort{cam2}, captionpos=b, label={lst:cam2_file}]
 def run_point_cloud_alignment(file_name, point_cloud_name, max_iterations, sample_size):
-    file_success = False
-    r_pointcloud = None
-    success = False
+    file_success=False
+    r_pointcloud=None
+    success=False
 
     while not success:
         # Open file, if needed
         open_point_cloud_file(file_name)
 
         # Run PCA
-        point_cloud_success = False
-        params = {'pointcloudName': point_cloud_name,
+        point_cloud_success=False
+        params={'pointcloudName': point_cloud_name,
                   'maxIterations': max_iterations,
                   'sampleSize': sample_size}
         while not point_cloud_success:
             try:
-                r_pointcloud = requests.post(run_alignment_url, params=params)
-                point_cloud_success = r_pointcloud.ok
-                success = True
+                r_pointcloud=requests.post(run_alignment_url, params=params)
+                point_cloud_success=r_pointcloud.ok
+                success=True
             except Exception:
                 input("Issues with CAM2 software connection, please restart the CAM2 software.")
 
-    response_string = r_pointcloud.content.decode("UTF-8")
-    response_dict = ast.literal_eval(response_string)
+    response_string=r_pointcloud.content.decode("UTF-8")
+    response_dict=ast.literal_eval(response_string)
     print("Executed PC alignment on " + point_cloud_name
           + " (max: " + str(response_dict['max'])
           + ", mean: " + str(response_dict['mean']) + ")")
@@ -151,10 +151,10 @@ The Actor is defined before the tuning session, as seen in the code excerpt \ref
 @ray.remote
 class CAM2Tracker(object):
     def __init__(self):
-        self.value = None
+        self.value=None
 
     def set(self, value):
-        self.value = value
+        self.value=value
         return self.value
 
     def get(self):
@@ -164,14 +164,40 @@ class CAM2Tracker(object):
 ray.init()
 
 # create the CAM2 open file tracker Actor
-cam2 = CAM2Tracker.options(name="CAM2Actor").remote()
+cam2=CAM2Tracker.options(name="CAM2Actor").remote()
 \end{lstlisting}
 
 \paragraph{Tuning Setup}
 
 To setup a tuning session, it is required to define various configuration parameters ahead of time, such as the search spaces. We have separated the search space definition as a separate section, but the remaining configuration parameters are included in this section.
 
-\todo{add setup example}
+\begin{lstlisting}[language=Python, caption=Tuning session configuration example, captionpos=b, label={lst:setupex}]
+tune.run(
+    trainable,
+    config={
+        "max_iterations": tune.quniform(1,10000,1),
+        "sample_size": tune.quniform(1,1000,1)},
+    name="bohb_search",
+    scheduler=HyperBandForBOHB(
+        time_attr="training_iteration",
+        max_t=100,
+        reduction_factor=4),
+    stop={"training_iteration": 100},
+    search_alg=TuneBOHB(
+        max_concurrent=1),
+    metric="avg_percentage_diff",
+    mode="max",
+    num_samples=100,
+    resources_per_trial={"cpu": 1},
+    fail_fast=True,
+    callbacks=[WandbLoggerCallback(
+        project="Point Cloud Alignment Project",
+        api_key="-----------------------",
+        log_config=True)]
+)
+\end{lstlisting}
+
+An example of a configuration for a tuning session can be seen in the code excerpt \ref{lst:setupex}.
 
 \subparagraph{Trainable Object}
 
@@ -189,11 +215,47 @@ Meanwhile, the Class \acrshort{api} requires to define a \verb!ray.tune.Trainabl
 
 In this project we have used the function \acrshort{api}, specifically due to the ability to report multiple metrics using \verb!yield!. A abridged implementation is shown in the code excerpt \ref{lst:trainable}.
 
-\todo{add code excerpt}
-\begin{lstlisting}[language=Python, caption=Example Trainable function, captionpos=b, label={lst:trainable}]
-Missing
-\end{lstlisting}
+\begin{lstlisting}[language=Python, caption=Abridged Trainable function, captionpos=b, label={lst:trainable}]
+def trainable(config, checkpoint_dir=None):
+    # define variables
 
+    # load configuration values
+    max_iterations=config['max_iterations']
+    sample_size=config['sample_size']
+
+
+    while current_file < len(fcd_files_point_clouds):
+        # load data from a checkpoint, if available 
+        if checkpoint_dir:
+            with open(os.path.join(checkpoint_dir, "checkpoint")) as f:
+                state=json.loads(f.read())
+                current_file=state["file"]
+                last_point_cloud=state["pointcloud"]
+                total_runs=state["total_runs"]
+                avg_mean_percentage_diff=state["average_max_delta"]
+                avg_max_percentage_diff=state["average_mean_delta"]
+
+        #open file if needed
+
+        while current_point_cloud < len(fcd_files_point_clouds[current_file][1]):
+            # execute PCA algorithm
+
+            # save data in a checkpoint
+            with tune.checkpoint_dir(step=current_file) as checkpoint_dir:
+                with open(os.path.join(checkpoint_dir, "checkpoint"), "w") as f:
+                    f.write(json.dumps({"file": current_file,
+                                        "pointcloud": current_point_cloud - 1,
+                                        "average_max_delta": avg_mean_percentage_diff,
+                                        "average_mean_delta": avg_max_percentage_diff,
+                                        "total_runs": total_runs}))
+
+            # forward data to Ray Tune
+            yield {"avg_percentage_diff": opt_delta,
+                   "percentage_diff": mean_percentage_diff,
+                   "mean_delta": mean_delta,
+                   "max_delta": max_delta,
+                   "run_time": total_time}
+\end{lstlisting}
 
 \subparagraph{\acrshort{hpo} Algorithm}
 
@@ -202,7 +264,7 @@ Each tuning session requires defining which algorithm will be used to explore th
 To select an algorithm, we create its search object, define its specific hyper parameters (e.g.\ constraints, initial values, reduction factors, time scale attributes and others), and pass the object to the Ray Tune session. We can see the definition of an algorithm configuration in the code excerpt \ref{lst:algconfig}.
 
 \begin{lstlisting}[language=json, caption=Example algorithm configuration, captionpos=b, label={lst:algconfig}]
-algorithm = AxSearch(
+algorithm=AxSearch(
     max_concurrent=4,
     parameter_constraints=["x1 + x2 <= 2.0"],  # Optional.
     outcome_constraints=["l2norm <= 1.25"],  # Optional.
@@ -213,8 +275,9 @@ algorithm = AxSearch(
 
 Some of the \acrshort{hpo} algorithm are written as ``scheduling algorithms'' within Ray Tune. To accomplish this, we use schedulers, which, in conjunction with the \acrshort{hpo} algorithm, can early terminate bad trials, pause trials, clone trials, and alter hyper parameters of a running trial. An example of a scheduler configuration can be seen in the code excerpt \ref{lst:schedconfig}.
 
+\newpage
 \begin{lstlisting}[language=Python, caption=Example trial scheduler configuration, captionpos=b, label={lst:schedconfig}]
-asha_scheduler = ASHAScheduler(
+asha_scheduler=ASHAScheduler(
     time_attr='training_iteration',
     metric='episode_reward_mean',
     mode='max',
@@ -231,7 +294,6 @@ Throughout this internship, we have used schedulers with the \acrshort{bohb} alg
 
 In order to limit resource usage as well as to force single-threading within the Ray Tune framework, we use resource allocation. With this, we can limit \acrshort{cpu} and \acrshort{gpu} thread usage. In order to enforce single-threading within each trial, we can limit each trial to use 1 \acrshort{cpu} thread, as well as limiting the Ray Tune framework available number of threads. To implement this feature we define a \verb!resources_per_trial! dictionary (as seen in the code excerpt \ref{lst:resconfig}) which is then passed on to the training session.
 
-
 \begin{lstlisting}[language=Python, caption=Example resource allocation configuration, captionpos=b, label={lst:resconfig}]
 resources_per_trial={
     "cpu": 64, 
@@ -239,17 +301,42 @@ resources_per_trial={
 }
 \end{lstlisting}
 
-\subparagraph{Stop Criteria (?)}
+\subparagraph{Stop Criteria}
 
-\todo{Unsure if I used this}
+Additionally, we also have the ability to stop a trial based on a variety of factors, such as results, total iterations or time. To do this, we specify the \verb!stop! parameter within the tuning session setup. An example can be seen in the code excerpt \ref{lst:stopconfig}.
 
+\begin{lstlisting}[language=Python, caption=Example stopping criteria configuration, captionpos=b, label={lst:stopconfig}]
+stop={
+    "training_iteration": 100
+}
+\end{lstlisting}
+
+Within this project we define the stopping criteria as a total number of iterations (which is equivalent to the number of point cloud available).
 
 \subparagraph{Metric Reporting}
 
-A trial produces a large amount of data, from the results, parameters used and metadata (e.g.\ time of execution, start time). In order to being able to save this data outside a trial object, it is necessary to report it to the Ray Tune framework. To do this, we use the \verb!yield! function, which sends data to the Ray Tune framework from the trial object. Using this, we report a variety of data, besides the default metadata automatically collected by the Ray Tune framework. We specifically report \todo{Missing reported data point}.
+A trial produces a large amount of data, from the results, parameters used and metadata (e.g.\ time of execution, start time). In order to being able to save this data outside a trial object, it is necessary to report it to the Ray Tune framework. To do this, we use the \verb!yield! function, which sends data to the Ray Tune framework from the trial object. Using this, we report a variety of data, besides the default metadata automatically collected by the Ray Tune framework. We specifically report the following data points:
+
+\begin{itemize}
+    \item average percentage difference over baseline, the percentage difference between the obtained results versus the baseline results, averaged for all already aligned point clouds
+    \item percentage difference over baseline for the current point cloud
+    \item delta over baseline for the average accuracy on the current point cloud
+    \item delta over baseline for the maximum accuracy on the current point cloud
+    \item run time for the \acrshort{cam2} \acrshort{pca} algorithm execution
+\end{itemize}
 
 We also need to define, from the reported data, which variable we are tracking and optimizing. This is necessary to evaluate the performance of a hyper parameter value set and to provide information for the \acrshort{hpo} algorithms. To do this, we need to define which of the reported metrics we are using for the optimization process as well as define how we are trying to optimizing said variable (maximizing or minimizing it). This is achieved by defining both of these in the tuning session setup, using the \verb!metric! and \verb!mode! parameters, as seen on \ref{lst:setupex}
 
 \subparagraph{Logger}
 
-As mentioned previously, we used the Weight and Biases service to show the obtained data visually. To do this, we need to send the obtained data to the WandB \acrshort{api}. This is done using the logger functionality within Ray Tune. 
+As mentioned previously, we used the Weight and Biases service to show the obtained data visually. To do this, we need to send the obtained data to the WandB \acrshort{api}. This is done using the logger functionality within Ray Tune, where we can add a logger, in this case a \verb!WandbLoggerCallback! to the \verb!callbacks! parameter in the tuning session. We can see an example of this in the code excerpt \ref{lst:loggerconf}.
+
+\begin{lstlisting}[language=Python, caption=Example WandB logger configuration, captionpos=b, label={lst:loggerconf}]
+callbacks=[
+    WandbLoggerCallback(
+        project="Point Cloud Alignment Project",
+        api_key="--------------",
+        log_config=True
+    )
+]
+\end{lstlisting}
