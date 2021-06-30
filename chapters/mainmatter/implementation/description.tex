@@ -65,9 +65,9 @@ config = {
 
 To execute a \acrshort{pca} in \acrshort{cam2} we need to perform 2 actions: load the \acrshort{fcd} file and initiate the \acrshort{pca} functionality. This 2 step provided some challenges, seeing as there is no straight forward way to know which file is loaded into the CAM2 software. Overall we also found issues due to \acrshort{cam2} keeping files in memory, which creates some instability with larger files and further along the tuning session.
 
-The file opening \acrshort{http} request returnsan empty response, with only a status code, usually 202 (the standard response for an accepted HTTP request) or 40* (the usual code for a client error). The former happens when, for example, the file we are trying to open does not exist.
+The file opening \acrshort{http} request returns an empty response, with only a status code, usually 202 (the standard response for an accepted HTTP request) or 40* (the usual code for a client error). The former happens when, for example, the file we are trying to open does not exist.
 
-The \acrshort{pca} \acrshort{http} request returns a \acrshort{json} object, containing the maximum and mean values for the accuracy of the alignment, as you can see in the code excerpt \ref{lst:pcaresp}, as well  usually 202 when succesful, or a empty response and a 40* status code. The former happens when, for example, the open file does not contain the selected point cloud.
+The \acrshort{pca} \acrshort{http} request returns a \acrshort{json} object, containing the maximum and mean values for the accuracy of the alignment, as you can see in the code excerpt \ref{lst:pcaresp}, as well  usually 202 when successful, or a empty response and a 40* status code. The former happens when, for example, the open file does not contain the selected point cloud.
 
 \begin{lstlisting}[language=json, caption=Example \acrshort{pca} \acrshort{http} request response, captionpos=b, label={lst:pcaresp}]
 {
@@ -76,7 +76,7 @@ The \acrshort{pca} \acrshort{http} request returns a \acrshort{json} object, con
 }
 \end{lstlisting}
 
-To fix these issues, we implemented a actor, which we will further define in the following paragraph, and added fail safes, which allow the develoepr to restart the \acrshort{cam2}, if necessary, without stopping the training process. These fail safes can be seen in the code excerpt \ref{lst:cam2_pca} and \ref{lst:cam2_file}. Beside these measures, Ray Tune also automatically saves each trial run, and as such, in case of an error, we can restart or rerun a trial.
+To fix these issues, we implemented a actor, which we will further define in the following paragraph, and added fail safes, which allow the developer to restart the \acrshort{cam2}, if necessary, without stopping the training process. These fail safes can be seen in the code excerpt \ref{lst:cam2_pca} and \ref{lst:cam2_file}. Beside these measures, Ray Tune also automatically saves each trial run, and as such, in case of an error, we can restart or rerun a trial.
 
 \begin{lstlisting}[language=Python, caption=Opening a \acrshort{fcd} file in \acrshort{cam2}, captionpos=b, label={lst:cam2_pca}]
 def open_point_cloud_file(file_name):
@@ -105,7 +105,7 @@ def open_point_cloud_file(file_name):
         print(file_name + " is already loaded into CAM2")
 \end{lstlisting}
 
-As you can see, we give appropriate time for a developer to restart \acrshort{cam2} when the file opening \acrshort{http} request fails. Besides this, we also use the actor functionality in Ray Tune (line 4-8).
+As you can see, we give appropriate time for a developer to restart \acrshort{cam2} when the file opening \acrshort{http} request fails. Besides this, we also use the actor functionality in Ray Tune (line 4-8), where we retrieve the current file loaded in CAM2, as logged by the Actor and the previously running trials and in line 18, when we have successfully loaded a new file into \acrshort{cam2} and update the Actor service accordingly.
 
 \begin{lstlisting}[language=Python, caption=Running \acrshort{pca} function in \acrshort{cam2}, captionpos=b, label={lst:cam2_file}]
 def run_point_cloud_alignment(file_name, point_cloud_name, max_iterations, sample_size):
@@ -145,7 +145,7 @@ Once again, we allow the developer to restart \acrshort{cam2} when the \acrshort
 To accurately keep track of what file is open in the \acrshort{cam2} software within each different trial, we used a Actor, a stateful worker/service within Ray Tune. This service allows us to keep track of what is open on \acrshort{cam2}, without creating issues due to concurrency (where 2 trial runs try to open different files at the same time) or issues with data sharing between processes (where a given trial is unable to share its state with other trials). 
 
 The Actor is defined before the tuning session, as seen in the code excerpt \ref{lst:actor}. After defining an Actor, we are then able to create within the Ray Tune framework and get its current value and update its value from any running trial.
-\newpage
+
 \begin{lstlisting}[language=Python, caption=Initiating a Ray Tune Actor, captionpos=b, label={lst:actor}]
 # define CAM2 Actor
 @ray.remote
@@ -169,10 +169,87 @@ cam2 = CAM2Tracker.options(name="CAM2Actor").remote()
 
 \paragraph{Tuning Setup}
 
+To setup a tuning session, it is required to define various configuration parameters ahead of time, such as the search spaces. We have separated the search space definition as a separate section, but the remaining configuration parameters are included in this section.
+
+\todo{add setup example}
+
 \subparagraph{Trainable Object}
+
+Although we created the required interfacing methods and tracking services, we still need to treat the obtained data and report it correctly to the Ray Tune framework. To do this, Ray Tune provides two \acrshort{api}: the Class \acrshort{api} and the function \acrshort{api}. 
+
+The function \acrshort{api} allows a Python function to be used, requiring only a \verb!yield! or \verb!tune.report! command to report data and two input variables: a \verb!config! object containing the hyper parameter values to be used and a \verb!checkpoint_dir! variable, which is provided if we are resuming a paused trial.
+
+Meanwhile, the Class \acrshort{api} requires to define a \verb!ray.tune.Trainable! subclass. This subclass requires implementing three methods: 
+
+\begin{itemize}
+    \item a \verb!setup! function, which is invoked when the training starts.
+    \item a \verb!step! function, which is invoked multiple times and executes one logical process, which, in this project, is equivalent to one \acrshort{pca} execution.
+    \item a \verb!cleanup! function, which is invoked when the training ends.
+\end{itemize}
+
+In this project we have used the function \acrshort{api}, specifically due to the ability to report multiple metrics using \verb!yield!. A abridged implementation is shown in the code excerpt \ref{lst:trainable}.
+
+\todo{add code excerpt}
+\begin{lstlisting}[language=Python, caption=Example Trainable function, captionpos=b, label={lst:trainable}]
+Missing
+\end{lstlisting}
+
+
+\subparagraph{\acrshort{hpo} Algorithm}
+
+Each tuning session requires defining which algorithm will be used to explore the search spaces. One of the reasons we have chosen to use the Ray Tune framework in this internship is its plethora of available algorithms to choose from. Specifically, and due to time/computational restrictions, we have used two algorithms: random search and \acrshort{bohb}. We have also defined configurations for a implementation of \acrshort{tpe} algorithm, through HyperOpt \parencite{10.5555/3042817.3042832}.
+
+To select an algorithm, we create its search object, define its specific hyper parameters (e.g.\ constraints, initial values, reduction factors, time scale attributes and others), and pass the object to the Ray Tune session. We can see the definition of an algorithm configuration in the code excerpt \ref{lst:algconfig}.
+
+\begin{lstlisting}[language=json, caption=Example algorithm configuration, captionpos=b, label={lst:algconfig}]
+algorithm = AxSearch(
+    max_concurrent=4,
+    parameter_constraints=["x1 + x2 <= 2.0"],  # Optional.
+    outcome_constraints=["l2norm <= 1.25"],  # Optional.
+)
+\end{lstlisting}
+
 \subparagraph{Scheduler}
-\subparagraph{Algorithm}
+
+Some of the \acrshort{hpo} algorithm are written as ``scheduling algorithms'' within Ray Tune. To accomplish this, we use schedulers, which, in conjunction with the \acrshort{hpo} algorithm, can early terminate bad trials, pause trials, clone trials, and alter hyper parameters of a running trial. An example of a scheduler configuration can be seen in the code excerpt \ref{lst:schedconfig}.
+
+\begin{lstlisting}[language=Python, caption=Example trial scheduler configuration, captionpos=b, label={lst:schedconfig}]
+asha_scheduler = ASHAScheduler(
+    time_attr='training_iteration',
+    metric='episode_reward_mean',
+    mode='max',
+    max_t=100,
+    grace_period=10,
+    reduction_factor=3,
+    brackets=1)
+)
+\end{lstlisting}
+
+Throughout this internship, we have used schedulers with the \acrshort{bohb} algorithm, as the \acrshort{hb} part requires the usage of the \verb!tune.schedulers.HyperBandScheduler! scheduler.
+
 \subparagraph{Resources}
+
+In order to limit resource usage as well as to force single-threading within the Ray Tune framework, we use resource allocation. With this, we can limit \acrshort{cpu} and \acrshort{gpu} thread usage. In order to enforce single-threading within each trial, we can limit each trial to use 1 \acrshort{cpu} thread, as well as limiting the Ray Tune framework available number of threads. To implement this feature we define a \verb!resources_per_trial! dictionary (as seen in the code excerpt \ref{lst:resconfig}) which is then passed on to the training session.
+
+
+\begin{lstlisting}[language=Python, caption=Example resource allocation configuration, captionpos=b, label={lst:resconfig}]
+resources_per_trial={
+    "cpu": 64, 
+    "gpu": 8
+}
+\end{lstlisting}
+
 \subparagraph{Stop Criteria (?)}
-\subparagraph{Metric Tracking}
+
+\todo{Unsure if I used this}
+
+
+\subparagraph{Metric Reporting}
+
+A trial produces a large amount of data, from the results, parameters used and metadata (e.g.\ time of execution, start time). In order to being able to save this data outside a trial object, it is necessary to report it to the Ray Tune framework. To do this, we use the \verb!yield! function, which sends data to the Ray Tune framework from the trial object. Using this, we report a variety of data, besides the default metadata automatically collected by the Ray Tune framework. We specifically report \todo{Missing reported data point}.
+
+We also need to define, from the reported data, which variable we are tracking and optimizing. This is necessary to evaluate the performance of a hyper parameter value set and to provide information for the \acrshort{hpo} algorithms. To do this, we need to define which of the reported metrics we are using for the optimization process as well as define how we are trying to optimizing said variable (maximizing or minizing it). This is achieved by defining both of these in the tuning session setup, using the \verb!metric! and \verb!mode! parameters, as seen on \ref{lst:setupex}
+
 \subparagraph{Logger}
+
+\todo{Missing}

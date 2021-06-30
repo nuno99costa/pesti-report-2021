@@ -102,7 +102,7 @@ Analogously, simulated annealing maintains a single candidate solution and takes
 
 Bayesian optimization can be described as sequential model-based optimization, whereas a probabilistic model is updated after every optimization attempt \parencite{dewancker}.
 
-Various probabilistic regression models can be used (e.g. Gaussian Processes and Random Forests). One of these regression models, Tree Parzen Estimators, deviates from the standard regression models, which use a predictive distribution $p(y|x)$. Instead, it creates two density functions that act as generative models for all domain variables \parencite{NIPS2011_86e8f7ab}\parencite{elshawi2019automated}.
+Various probabilistic regression models can be used (e.g. Gaussian Processes and Random Forests). One of these regression models, \acrfull{tpe}, deviates from the standard regression models, which use a predictive distribution $p(y|x)$. Instead, it creates two density functions that act as generative models for all domain variables \parencite{NIPS2011_86e8f7ab}\parencite{elshawi2019automated}.
 
 \subparagraph{Population-based Optimization}
 
@@ -135,10 +135,10 @@ These techniques are based on the \textit{multi-armed bandit problem}, whereas a
 \subparagraph{Successive Halving} 
 This algorithm is an example of a bandit-based approach to the \acrshort{hpo} problem \parencite{jamieson2015nonstochastic}. Here the optimization process begins as a random search with periodical pruning of lower performing trials, therefore saving time and computational resources. 
 
-\subparagraph{HyperBand}
+\subparagraph{\acrshort{hb}}
 This algorithm is based on bandit-based optimization, solving the issue of time allocation \textit{in lieu} of search time. As an example, \textit{successive halving} incurs on an issue regarding whether to allocate a large part of the time budget on exploring a large number of solutions rather than tuning a small number of them \parencite{elshawi2019automated}. \textit{HyperBand} attempts to solve this issue by partitioning the original time budget into smaller time and budget combinations and using \textit{successive halving} on each configuration \parencite{li2016hyperband}.
 
-\subparagraph{BOHB (Bayesian Optimization and HyperBand)}
+\subparagraph{\acrfull{bohb}}
 This algorithm is a combination of bayesian optimization and HyperBand, bringing together the best of both black-box and multi-fidelity optimization algorithms \parencite{pmlr-v80-falkner18a}. This algorithm works using a initial stage of successive halving (HyperBand), which optimizes a given function quickly, using early termination and parallel computation, while at the same time building a probability model using the results from said stage, which it uses in a second stage, significantly improving the speed at which the hyper parameters converge to optimal configurations.
 
 \paragraph{Learning Curve Modelling}
