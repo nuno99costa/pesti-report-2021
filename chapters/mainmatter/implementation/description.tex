@@ -248,8 +248,8 @@ resources_per_trial={
 
 A trial produces a large amount of data, from the results, parameters used and metadata (e.g.\ time of execution, start time). In order to being able to save this data outside a trial object, it is necessary to report it to the Ray Tune framework. To do this, we use the \verb!yield! function, which sends data to the Ray Tune framework from the trial object. Using this, we report a variety of data, besides the default metadata automatically collected by the Ray Tune framework. We specifically report \todo{Missing reported data point}.
 
-We also need to define, from the reported data, which variable we are tracking and optimizing. This is necessary to evaluate the performance of a hyper parameter value set and to provide information for the \acrshort{hpo} algorithms. To do this, we need to define which of the reported metrics we are using for the optimization process as well as define how we are trying to optimizing said variable (maximizing or minizing it). This is achieved by defining both of these in the tuning session setup, using the \verb!metric! and \verb!mode! parameters, as seen on \ref{lst:setupex}
+We also need to define, from the reported data, which variable we are tracking and optimizing. This is necessary to evaluate the performance of a hyper parameter value set and to provide information for the \acrshort{hpo} algorithms. To do this, we need to define which of the reported metrics we are using for the optimization process as well as define how we are trying to optimizing said variable (maximizing or minimizing it). This is achieved by defining both of these in the tuning session setup, using the \verb!metric! and \verb!mode! parameters, as seen on \ref{lst:setupex}
 
 \subparagraph{Logger}
 
-\todo{Missing}
+As mentioned previously, we used the Weight and Biases service to show the obtained data visually. To do this, we need to send the obtained data to the WandB \acrshort{api}. This is done using the logger functionality within Ray Tune. 
