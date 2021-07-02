@@ -76,7 +76,7 @@ The \acrshort{pca} \acrshort{http} request returns a \acrshort{json} object, con
 }
 \end{lstlisting}
 
-To fix these issues, we implemented a actor, which we will further define in the following paragraph, and added fail safes, which allow the developer to restart the \acrshort{cam2}, if necessary, without stopping the training process. These fail safes can be seen in the code excerpt \ref{lst:cam2_pca} and \ref{lst:cam2_file}. Beside these measures, Ray Tune also automatically saves each trial run, and as such, in case of an error, we can restart or rerun a trial.
+To fix these issues, we implemented a actor, which we will further define in the following paragraph, and added fail safes, which allow the developer to restart the \acrshort{cam2}, if necessary, without stopping the training process. These fail safes can be seen in the code excerpts \ref{lst:cam2_pca} and \ref{lst:cam2_file}. Beside these measures, Ray Tune also automatically saves each trial run, and as such, in case of an error, we can restart or rerun a trial.
 
 \begin{lstlisting}[language=Python, caption=Opening a \acrshort{fcd} file in \acrshort{cam2}, captionpos=b, label={lst:cam2_pca}]
 def open_point_cloud_file(file_name):
