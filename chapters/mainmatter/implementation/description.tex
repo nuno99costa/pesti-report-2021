@@ -10,9 +10,9 @@ The project was developed in Python, and as such a Python environment was requir
 
 \paragraph{Python Environment}
 
-Initially a Docker container was used, as there was issues with Windows and certain Python libraries used by Ray Tune. This Docker container, based on a \acrfull{alp}, contained the necessary software packages, runtime environments as well as the Python packages required to run Ray Tune.
+Initially a Docker container was used, as there was issues with Windows and certain Python libraries used by Ray Tune. This Docker container, based on \acrfull{alp}, contained the necessary software packages, runtime environments as well as the Python packages required to run Ray Tune.
 
-Further into the development process it became possible to use Ray Tune in the developers laptop and as such we moved development away from Docker and into a \acrfull{anaconda}. This allowed us to remove unnecessary complexity from the developed system. Although \acrshort{anaconda} does provide virtual environment capabilities, these were not used in this project as there was only one ``container'' in usage and therefore only one virtual environment. This environment can be activated and accessed as seen in the code excerpt \ref{lst:anaconda}.
+Further into the development process it became possible to use Ray Tune in the developers laptop, thus we moved development away from Docker and into a \acrfull{anaconda}. This allowed us to remove unnecessary complexity from the developed system. Although \acrshort{anaconda} does provide virtual environment capabilities, these were not used in this project as there was only one ``container'' in usage and therefore only one virtual environment. This environment can be activated and accessed as seen in the code excerpt \ref{lst:anaconda}.
 
 \begin{lstlisting}[language=Python, caption=Managing a Conda environment, captionpos=b, label={lst:anaconda}]
 #Create a Conda environment
@@ -76,7 +76,7 @@ The \acrshort{pca} \acrshort{http} request returns a \acrshort{json} object, con
 }
 \end{lstlisting}
 
-To fix these issues, we implemented a actor, which we will further define in the following paragraph, and added fail safes, which allow the developer to restart the \acrshort{cam2}, if necessary, without stopping the training process. These fail safes can be seen in the code excerpt \ref{lst:cam2_pca} and \ref{lst:cam2_file}. Beside these measures, Ray Tune also automatically saves each trial run, and as such, in case of an error, we can restart or rerun a trial.
+To fix these issues, we implemented an actor, which we will further define in the following paragraph, and added fail safes, which allow the developer to restart the \acrshort{cam2}, if necessary, without stopping the training process. These fail safes can be seen in the code excerpt \ref{lst:cam2_pca} and \ref{lst:cam2_file}. Besides these measures, Ray Tune also automatically saves each trial run, and as such, in case of an error, we can restart or rerun a trial.
 
 \begin{lstlisting}[language=Python, caption=Opening a \acrshort{fcd} file in \acrshort{cam2}, captionpos=b, label={lst:cam2_pca}]
 def open_point_cloud_file(file_name):
@@ -142,7 +142,7 @@ Once again, we allow the developer to restart \acrshort{cam2} when the \acrshort
 
 \subparagraph{Ray Tune Actor}
 
-To accurately keep track of what file is open in the \acrshort{cam2} software within each different trial, we used a Actor, a stateful worker/service within Ray Tune. This service allows us to keep track of what is open on \acrshort{cam2}, without creating issues due to concurrency (where 2 trial runs try to open different files at the same time) or issues with data sharing between processes (where a given trial is unable to share its state with other trials). 
+To accurately keep track of what file is open in the \acrshort{cam2} software within each different trial, we used an Actor, a stateful worker/service within Ray Tune. This service allows us to keep track of what is open on \acrshort{cam2}, without creating issues due to concurrency (where 2 trial runs try to open different files at the same time) or issues with data sharing between processes (where a given trial is unable to share its state with other trials). 
 
 The Actor is defined before the tuning session, as seen in the code excerpt \ref{lst:actor}. After defining an Actor, we are then able to create within the Ray Tune framework and get its current value and update its value from any running trial.
 
@@ -325,7 +325,7 @@ A trial produces a large amount of data, from the results, parameters used and m
     \item run time for the \acrshort{cam2} \acrshort{pca} algorithm execution
 \end{itemize}
 
-We also need to define, from the reported data, which variable we are tracking and optimizing. This is necessary to evaluate the performance of a hyper parameter value set and to provide information for the \acrshort{hpo} algorithms. To do this, we need to define which of the reported metrics we are using for the optimization process as well as define how we are trying to optimizing said variable (maximizing or minimizing it). This is achieved by defining both of these in the tuning session setup, using the \verb!metric! and \verb!mode! parameters, as seen on \ref{lst:setupex}
+We also need to define, from the reported data, which variable we are tracking and optimizing. This is necessary to evaluate the performance of a hyper parameter value set and to provide information for the \acrshort{hpo} algorithms. To do this, we need to define which of the reported metrics we are using for the optimization process as well as define how we are trying to optimize the variable (maximizing or minimizing it). This is achieved by defining both of these in the tuning session setup, using the \verb!metric! and \verb!mode! parameters, as seen on code excerpt \ref{lst:setupex}
 
 \subparagraph{Logger}
 
