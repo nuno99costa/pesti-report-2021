@@ -27,6 +27,8 @@ conda install {package_name}
 
 The developed tool requires a variety of Python packages. The most important ones are the Ray framework and its dependencies, the dependencies required for each of the usable optimization algorithms (which are not included in the default Ray installation) and the HTTP Requests library, required for the connection between the Python tool and the \acrshort{cam2} application. In order to manage these dependencies, we have used a requirements text file, containing the required packages. This allows for any developer, even if not using \acrshort{anaconda}, can quickly install the required dependencies. This requirement text file is part of the available features of the \acrfull{pip}.
 
+\newpage
+
 \begin{lstlisting}[language=Python, caption=Requirement text file example, captionpos=b, label={lst:req}]
 ray~=1.2.0
 requests~=2.25.1
@@ -146,6 +148,8 @@ To accurately keep track of what file is open in the \acrshort{cam2} software wi
 
 The Actor is defined before the tuning session, as seen in the code excerpt \ref{lst:actor}. After defining an Actor, we are then able to create within the Ray Tune framework and get its current value and update its value from any running trial.
 
+\newpage
+
 \begin{lstlisting}[language=Python, caption=Initiating a Ray Tune Actor, captionpos=b, label={lst:actor}]
 # define CAM2 Actor
 @ray.remote
@@ -227,27 +231,28 @@ def trainable(config, checkpoint_dir=None):
     while current_file < len(fcd_files_point_clouds):
         # load data from a checkpoint, if available 
         if checkpoint_dir:
-            with open(os.path.join(checkpoint_dir, "checkpoint")) as f:
-                state=json.loads(f.read())
-                current_file=state["file"]
-                last_point_cloud=state["pointcloud"]
-                total_runs=state["total_runs"]
-                avg_mean_percentage_diff=state["average_max_delta"]
-                avg_max_percentage_diff=state["average_mean_delta"]
+          with open(os.path.join(checkpoint_dir, "checkpoint")) as f:
+            state=json.loads(f.read())
+            current_file=state["file"]
+            last_point_cloud=state["pointcloud"]
+            total_runs=state["total_runs"]
+            avg_mean_percentage_diff=state["average_max_delta"]
+            avg_max_percentage_diff=state["average_mean_delta"]
 
         #open file if needed
 
-        while current_point_cloud < len(fcd_files_point_clouds[current_file][1]):
-            # execute PCA algorithm
+        while current_point_cloud < 
+                len(fcd_files_point_clouds[current_file][1]):
+          # execute PCA algorithm
 
-            # save data in a checkpoint
-            with tune.checkpoint_dir(step=current_file) as checkpoint_dir:
-                with open(os.path.join(checkpoint_dir, "checkpoint"), "w") as f:
-                    f.write(json.dumps({"file": current_file,
-                                        "pointcloud": current_point_cloud - 1,
-                                        "average_max_delta": avg_mean_percentage_diff,
-                                        "average_mean_delta": avg_max_percentage_diff,
-                                        "total_runs": total_runs}))
+          # save data in a checkpoint
+          with tune.checkpoint_dir(step=current_file) as checkpoint_dir:
+            with open(os.path.join(checkpoint_dir, "checkpoint"), "w") as f:
+                f.write(json.dumps({"file": current_file,
+                            "pointcloud": current_point_cloud - 1,
+                            "average_max_delta": avg_mean_percentage_diff,
+                            "average_mean_delta": avg_max_percentage_diff,
+                            "total_runs": total_runs}))
 
             # forward data to Ray Tune
             yield {"avg_percentage_diff": opt_delta,

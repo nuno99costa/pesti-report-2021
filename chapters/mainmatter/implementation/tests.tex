@@ -1,4 +1,21 @@
 %!TEX root = ../../../main.tex
 
 \subsection{Tests}
-\todo{missing}
+
+In order to guarantee that the developed solution works correctly it is important that we properly test it. In order to do that, we have tested all of the code written throughout the internship. In this instance, testing the actual framework and services used (Ray Tune and Weight and Biases), as it was outside the scope of this internship (and, we assume, properly tested by their respective developers and contributors).
+
+Software tests can usually be split into three categories \parencite{Society_2014}:
+
+\begin{itemize}
+	\item Unit testing: tests used to validate the functionality of a specific code section, usually at a method/function level.
+	\item Integration Testing: tests used to validate that interfaces between components or systems are working correctly.
+	\item System testing: tests used to validate the entire solution. A single use test usually involves completing a specific workflow, within the system.
+\end{itemize}
+
+After analysing the problem and proposed solution, we decided to test within 2 categories of tests: unit tests and integration tests. Both of these were automated, requiring zero active input. The integration tests do require that we initially start the \acrshort{cam2} software in accordance with code excerpt \ref{lst:cam2}.
+
+For the unit tests, we decided to test every developed function. Some of these functions require active connection to other services, such as the \acrshort{cam2}. In these specific cases we use \verb!unittest.mock!, a mock object library, which allows us to replace parts of the system with mock objects and make assertions about how they have been used. With this library we mock the \verb!requests.post!, which allows to verify when this method is called and to send a result to the function caller without connecting, for example, to the \acrshort{cam2} software.
+
+For integration tests we targeted specifically the interface between the developed solution and the \acrshort{cam2} software. Although there are more interfaces between different systems in the developed solutions, we came across issues (referred to in section \ref{sec:futurework}) which hindered our ability to test them.
+
+After executing both unit and integration tests, we have found that the developed system follows the restrictions set in place and, within the scope of the tests, is perfoming according to the specifications provided during the analysis of the problem.

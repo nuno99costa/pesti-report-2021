@@ -5,7 +5,7 @@
 
 During the development and testing process there were limitations that can be overcome in future work.
 
-First and foremost, the non-parallel nature of \acrshort{cam2} limits the developed solution with regards to time limitations. In the future, this issue can be overcome by creating other ``nodes'' in a network, each one being one computer, where we can then run the \acrshort{pca} function in a parallel way, allowing for faster testing and for more complex algorithms to be used.
+First and foremost, the non-parallel nature of \acrshort{cam2} limits the developed solution with regards to time of execution for each trial and total time spent on \acrshort{hpo}. In the future, this issue can be overcome by creating other ``nodes'' in a network, each one being one computer, where we can then run the \acrshort{pca} function in a parallel way, allowing for faster testing and for more complex algorithms to be used.
 
 Furthermore, it has come to our attention that, while only 2 hyper parameters are exposed through the \acrshort{cam2} \acrshort{api}, the actual \acrshort{pca} function has more hyper parameters. As such, we cannot reliabily ascertain that the current configuration for these hyper parameters is actually optimal and believe that, in future work, exposing these parameters and attempt to optimize these parameters may yield better results.
 
